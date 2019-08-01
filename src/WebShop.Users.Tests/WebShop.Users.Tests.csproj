@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <ProjectGuid>{ef4a39d5-8493-40cf-aca1-5bee949d2158}</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1"></DotNetCliToolReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Api\WebShop.Users.Api.csproj" />
+    <ProjectReference Include="..\WebShop.Users.AppServices\WebShop.Users.AppServices.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Contracts\WebShop.Users.Contracts.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Data\WebShop.Users.Data.csproj" />
+  </ItemGroup>
+
+</Project>

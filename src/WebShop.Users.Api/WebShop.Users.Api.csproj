@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <PackageId>WebShop.Users.Api</PackageId>
+    <Product>WebShop Users Service</Product>
+    <Description>WebShop Users ASP.NET Core WebApi REST Service</Description>
+    <InformationalVersion>00000000.0</InformationalVersion>
+    <ProjectGuid>{663060fe-5552-4429-8252-3ff0081801ab}</ProjectGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <!-- Documentation -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="4.0.1" />
+    <!-- Client code generator -->
+    <PackageReference Include="NSwag.AspNetCore" Version="12.2.3" />
+    <PackageReference Include="NSwag.MSBuild" Version="12.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <Product>WebShop Users Service</Product>
+    <Description>WebShop Users ASP.NET Core WebApi REST Service</Description>
+    </PackageReference>
+    <!-- Logging -->
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.0.1" />
+    <!-- Healthchecks -->
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.2" />
+    <!-- Azure AppInsights -->
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
+    <ProjectReference Include="..\WebShop.Users.AppServices\WebShop.Users.AppServices.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Contracts\WebShop.Users.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

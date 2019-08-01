@@ -1,0 +1,28 @@
+﻿#swagger-ui {
+}
+
+.swagger-ui .topbar .download-url-wrapper .select-label select {
+    border: 2px solid #61affe;
+}
+
+.swagger-ui .topbar {
+    background-color: #F4A140;
+}
+
+    .swagger-ui .topbar label {
+        color: #ffffff;
+    }
+
+.topbar-wrapper img {
+    content: url('/swagger-ui/icon-30x30.png');
+    border-radius:50%;
+}
+
+.markdown a{
+    text-decoration:none;
+    color:#006699;
+}
+
+.markdown img {
+    margin-right:10px;
+}
