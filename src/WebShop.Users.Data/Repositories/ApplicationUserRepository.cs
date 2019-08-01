@@ -120,5 +120,10 @@ namespace WebShop.Users.Data.Repositories
 
             
         }
+
+        public async Task<IEnumerable<String>> GetRoles(Guid userId)
+        {
+            return await _userManager.GetRolesAsync(await GetUser(userId));
+        }
     }
 }

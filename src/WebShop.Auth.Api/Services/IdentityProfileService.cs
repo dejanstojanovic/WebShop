@@ -13,20 +13,26 @@ namespace WebShop.Auth.Api.Services
     public class IdentityProfileService : IProfileService
     {
         protected UserManager<ApplicationUser> _userManager;
+        protected RoleManager<IdentityRole> _roleManager;
 
-        public IdentityProfileService(UserManager<ApplicationUser> userManager)
+        public IdentityProfileService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var user = await _userManager.GetUserAsync(context.Subject);
-            var claims = new List<Claim>
-        {
-            new Claim("userid", user.Id),
-            new Claim("email", user.Email),
-        };
+            IEnumerable<Claim> claims = new List<Claim>
+            {
+                new Claim("userid", user.Id),
+                new Claim("email", user.Email)
+            };
+            foreach (var roleName in await _userManager.GetRolesAsync(user))
+            {
+                claims = claims.Concat(await _roleManager.GetClaimsAsync(await _roleManager.FindByIdAsync(roleName)));
+            }
             context.IssuedClaims.AddRange(claims);
         }
 

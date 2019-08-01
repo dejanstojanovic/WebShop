@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Security.Claims;
 
 namespace WebShop.Users.Services.Extensions
 {
@@ -84,6 +85,19 @@ namespace WebShop.Users.Services.Extensions
 
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
+                //Create admin role
+                RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+                var adminRole = roleManager.FindByNameAsync("Admin").Result;
+                if (adminRole == null)
+                {
+                    adminRole = new IdentityRole("Admin");
+                    roleManager.CreateAsync(adminRole).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "view")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "create")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "update")).Wait();
+                }
+
+                //Create default admin user
                 ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 UserManager<ApplicationUser> userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
                 if (!dbContext.Users.Any())
@@ -103,6 +117,10 @@ namespace WebShop.Users.Services.Extensions
 
                     var task1 = userManager.CreateAsync(newUser, "Password1234!").Result;
                     var task2 = userManager.SetLockoutEnabledAsync(newUser, false).Result;
+
+                    //Assign admin role to user
+                    userManager.AddToRoleAsync(newUser, "Admin").Wait();
+                    
                 }
             }
         }

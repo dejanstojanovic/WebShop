@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebShop.Users.Data.Repositories
 {
@@ -26,5 +27,6 @@ namespace WebShop.Users.Data.Repositories
             String education,
             String email,
             int pageindex, int pageSize);
+        Task<IEnumerable<String>> GetRoles(Guid userId);
     }
 }
