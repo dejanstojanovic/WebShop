@@ -8,9 +8,9 @@ namespace WebShop.Mailing.Sendgrid.Extensions
     public static class SendgridExtensions
     {
 
-        public static void AddSendgridMailer(this IServiceCollection services)
+        public static void AddSendgridMailingService(this IServiceCollection services)
         {
-            services.AddSingleton<IMailer, Mailer>();
+            services.AddSingleton<IMailService, MailService>();
         }
 
     }

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using WebShop.Common.Exceptions;
-using WebShop.Users.AppServices.Handlers;
-using WebShop.Users.AppServices.Queries;
-using WebShop.Users.Contracts.ApplicationUser;
+using WebShop.Users.Services.Handlers;
+using WebShop.Users.Services.Queries;
+using WebShop.Users.Dtos.ApplicationUser;
 using WebShop.Users.Data.Entities;
 using WebShop.Users.Data.Repositories;
 using Moq;

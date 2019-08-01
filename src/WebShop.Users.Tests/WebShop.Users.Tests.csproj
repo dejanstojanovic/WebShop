@@ -20,8 +20,8 @@
   <ItemGroup>
     <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
     <ProjectReference Include="..\WebShop.Users.Api\WebShop.Users.Api.csproj" />
-    <ProjectReference Include="..\WebShop.Users.AppServices\WebShop.Users.AppServices.csproj" />
-    <ProjectReference Include="..\WebShop.Users.Contracts\WebShop.Users.Contracts.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Services\WebShop.Users.Services.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Dtos\WebShop.Users.Dtos.csproj" />
     <ProjectReference Include="..\WebShop.Users.Data\WebShop.Users.Data.csproj" />
   </ItemGroup>
 

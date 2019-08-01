@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebShop.Users.Api.Extensions;
-using WebShop.Users.AppServices.Extensions;
+using WebShop.Users.Services.Extensions;
 using WebShop.Users.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -83,7 +83,7 @@ namespace WebShop.Users.Api
                 };
             });
 
-            services.AddSwaggerCustom();
+            services.AddSwaggerApiDocumentation();
             services.AddMvc();
         }
 
@@ -110,7 +110,7 @@ namespace WebShop.Users.Api
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseSwaggerCustom();
+            app.UseSwaggerApiDocumentation();
             app.UseApiServices();
 
             app.UseMvc();

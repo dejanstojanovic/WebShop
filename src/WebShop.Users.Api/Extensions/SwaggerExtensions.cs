@@ -21,12 +21,11 @@ namespace WebShop.Users.Api.Extensions
     {
 
         /// <summary>
-        /// Adds Swagger serice to IOC container
+        /// Adds Swagger serice to IoC container
         /// </summary>
         /// <param name="services"></param>
-        public static void AddSwaggerCustom(this IServiceCollection services)
+        public static void AddSwaggerApiDocumentation(this IServiceCollection services)
         {
-            #region Swagger
             services.AddMvcCore()
                     .AddJsonFormatters()
                     .AddVersionedApiExplorer(
@@ -109,15 +108,14 @@ namespace WebShop.Users.Api.Extensions
                     #endregion
 
                 });
-            #endregion
 
         }
 
         /// <summary>
-        /// Adds Swagger middleware to the pipeline
+        /// Adds Swagger middleware to the pipeline with all custom settings
         /// </summary>
         /// <param name="app"></param>
-        public static void UseSwaggerCustom(this IApplicationBuilder app)
+        public static void UseSwaggerApiDocumentation(this IApplicationBuilder app)
         {
             #region Configure Swagger
             Microsoft.AspNetCore.Builder.SwaggerBuilderExtensions.UseSwagger(app);

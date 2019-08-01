@@ -1,9 +1,9 @@
 ﻿using WebShop.Common.Exceptions;
 using WebShop.Users.Api.Controllers.v1;
-using WebShop.Users.AppServices;
-using WebShop.Users.AppServices.Commands;
-using WebShop.Users.AppServices.Queries;
-using WebShop.Users.Contracts.ApplicationUser;
+using WebShop.Users.Services;
+using WebShop.Users.Services.Commands;
+using WebShop.Users.Services.Queries;
+using WebShop.Users.Dtos.ApplicationUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
