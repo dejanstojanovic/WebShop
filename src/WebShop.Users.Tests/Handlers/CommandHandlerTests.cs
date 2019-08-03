@@ -1,7 +1,7 @@
 ﻿using WebShop.Common.Exceptions;
-using WebShop.Users.Services.Commands;
-using WebShop.Users.Services.Handlers;
-using WebShop.Users.Dtos.ApplicationUser;
+using WebShop.Users.Common.Commands;
+using WebShop.Users.Common.Handlers;
+using WebShop.Users.Common.Dtos.ApplicationUser;
 using WebShop.Users.Data.Entities;
 using WebShop.Users.Data.Repositories;
 using Moq;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Xunit;
 using WebShop.Messaging;
 using AutoMapper;
-using WebShop.Users.Services.Events;
+using WebShop.Users.Common.Events;
 using WebShop.Users.Data;
 using WebShop.Storage;
 using Microsoft.Extensions.Logging;
@@ -26,7 +26,7 @@ namespace WebShop.Users.Tests.Handlers
         {
 
             //Arrange
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             Mock<IStorageService> storageService = new Mock<IStorageService>();
             Mock<ILogger<RegisterUserHandler>> logger = new Mock<ILogger<RegisterUserHandler>>();
@@ -46,7 +46,7 @@ namespace WebShop.Users.Tests.Handlers
                 logger.Object);
 
             //Act
-             await handler.HandleAsync(new RegisterUserCommand(new Register()));
+             await handler.HandleAsync(new RegisterUserCommand(new UserRegisterDto()));
 
             //Assert
             
@@ -56,7 +56,7 @@ namespace WebShop.Users.Tests.Handlers
         public async Task RegisterUser_ThrowsDuplicateException_WhenUserAlredyExists()
         {
             //Arrange
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             Mock<IStorageService> storageService = new Mock<IStorageService>();
             Mock<ILogger<RegisterUserHandler>> logger = new Mock<ILogger<RegisterUserHandler>>();
@@ -80,7 +80,7 @@ namespace WebShop.Users.Tests.Handlers
             //Act/Assert
             await Assert.ThrowsAsync<DuplicateException>(async () =>
             {
-                await handler.HandleAsync(new RegisterUserCommand(new Register()));
+                await handler.HandleAsync(new RegisterUserCommand(new UserRegisterDto()));
             });
 
         }
@@ -89,7 +89,7 @@ namespace WebShop.Users.Tests.Handlers
         public async Task UpdateUserProfile_ReturnsTask_WhenProfileUpdated()
         {
             //Arrange
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             applicationRepository.Setup(r => r.UpdateProfile(It.IsAny<Guid>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>(),It.IsAny<String>())).Returns(Task.CompletedTask);
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
@@ -97,7 +97,7 @@ namespace WebShop.Users.Tests.Handlers
             var handler = new UpdateProfileHandler(unitOfWork.Object);
 
             //Act
-            await handler.HandleAsync(new UpdateProfileCommand(Guid.NewGuid(),new ProfileUpdate()));
+            await handler.HandleAsync(new UpdateUserInfoCommand(Guid.NewGuid(),new UserInfoUpdateDto()));
 
             //Assert
         }
@@ -106,7 +106,7 @@ namespace WebShop.Users.Tests.Handlers
         public async Task UpdateUserProfile_ThrowsNotFoundExceptionk_WhenUserNotFound()
         {
             //Arrange
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             applicationRepository.Setup(r => r.UpdateProfile(It.IsAny<Guid>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>())).Throws<NotFoundException>();
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
@@ -115,7 +115,7 @@ namespace WebShop.Users.Tests.Handlers
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await handler.HandleAsync(new UpdateProfileCommand(Guid.NewGuid(), new ProfileUpdate()));
+                await handler.HandleAsync(new UpdateUserInfoCommand(Guid.NewGuid(), new UserInfoUpdateDto()));
             });
         }
 

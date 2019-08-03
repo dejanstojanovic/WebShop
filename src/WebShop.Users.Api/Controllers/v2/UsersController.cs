@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebShop.Users.Dtos.ApplicationUser;
-using WebShop.Users.Contracts;
-using WebShop.Users.Services;
-using WebShop.Users.Services.Commands;
-using WebShop.Users.Services.Queries;
+using WebShop.Users.Common.Dtos.ApplicationUser;
+using WebShop.Users.Common;
+using WebShop.Users.Common.Commands;
+using WebShop.Users.Common.Queries;
 using AutoMapper;
 using WebShop.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using WebShop.Common.Validation;
 using WebShop.Messaging;
 using Microsoft.AspNetCore.Cors;
+using WebShop.Users.Common.Dtos;
 
 namespace WebShop.Users.Api.Controllers.v2
 {

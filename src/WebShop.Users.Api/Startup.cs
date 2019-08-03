@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebShop.Users.Api.Extensions;
-using WebShop.Users.Services.Extensions;
+using WebShop.Users.Common.Extensions;
 using WebShop.Users.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

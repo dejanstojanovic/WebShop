@@ -42,8 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
-    <ProjectReference Include="..\WebShop.Users.Services\WebShop.Users.Services.csproj" />
-    <ProjectReference Include="..\WebShop.Users.Dtos\WebShop.Users.Dtos.csproj" />
+    <ProjectReference Include="..\WebShop.Users.Common\WebShop.Users.Common.csproj" />
   </ItemGroup>
 
 </Project>

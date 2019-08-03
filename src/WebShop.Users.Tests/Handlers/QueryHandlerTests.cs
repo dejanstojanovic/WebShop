@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using WebShop.Common.Exceptions;
-using WebShop.Users.Services.Handlers;
-using WebShop.Users.Services.Queries;
-using WebShop.Users.Dtos.ApplicationUser;
+using WebShop.Users.Common.Handlers;
+using WebShop.Users.Common.Queries;
+using WebShop.Users.Common.Dtos.ApplicationUser;
 using WebShop.Users.Data.Entities;
 using WebShop.Users.Data.Repositories;
 using Moq;
@@ -23,13 +23,13 @@ namespace WebShop.Users.Tests.Handlers
         {
 
             //Arrange
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
 
             applicationRepository.Setup(s => s.GetUser(It.IsAny<Guid>())).ReturnsAsync(new ApplicationUser());
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
             Mock<IMapper> mapper = new Mock<IMapper>();
-            mapper.Setup(m => m.Map<ProfileView>(It.IsAny<Object>())).Returns(new ProfileView());
+            mapper.Setup(m => m.Map<UserInfoDetailsViewDto>(It.IsAny<Object>())).Returns(new UserInfoDetailsViewDto());
 
             var handler = new ProfileGetHandler(
                 unitOfWork.Object,
@@ -41,21 +41,21 @@ namespace WebShop.Users.Tests.Handlers
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<ProfileView>(result);
+            Assert.IsAssignableFrom<UserInfoDetailsViewDto>(result);
         }
 
         [Fact]
         public async Task GetProfile_ThorowsNotFoundException_WhenUserNotFound()
         {
             //Arrange
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
 
             applicationRepository.Setup(s => s.GetUser(It.IsAny<Guid>())).Throws<NotFoundException>();
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
 
             Mock<IMapper> mapper = new Mock<IMapper>();
-            mapper.Setup(m => m.Map<ProfileView>(It.IsAny<Object>())).Returns(new ProfileView());
+            mapper.Setup(m => m.Map<UserInfoDetailsViewDto>(It.IsAny<Object>())).Returns(new UserInfoDetailsViewDto());
 
             var handler = new ProfileGetHandler(
                 unitOfWork.Object,
@@ -74,7 +74,7 @@ namespace WebShop.Users.Tests.Handlers
         {
             //Arrange
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             applicationRepository.Setup(s => s.GetUsers(
                 It.IsAny<String>(),
                  It.IsAny<String>(),
@@ -87,7 +87,7 @@ namespace WebShop.Users.Tests.Handlers
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
 
             Mock<IMapper> mapper = new Mock<IMapper>();
-            mapper.Setup(m => m.Map<IEnumerable<ProfileView>>(It.IsAny<Object>())).Returns(new List<ProfileView>());
+            mapper.Setup(m => m.Map<IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<Object>())).Returns(new List<UserInfoDetailsViewDto>());
 
             var handler = new ProfileBrowseHandler(
                 unitOfWork.Object,
@@ -95,11 +95,11 @@ namespace WebShop.Users.Tests.Handlers
                 );
 
             //Act
-            var result = await handler.HandleAsync(new ProfileBrowseQuery(new ProfileBrowse()));
+            var result = await handler.HandleAsync(new ProfileBrowseQuery(new UserInfoViewDto()));
 
             //Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<IEnumerable<ProfileView>>(result);
+            Assert.IsAssignableFrom<IEnumerable<UserInfoDetailsViewDto>>(result);
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace WebShop.Users.Tests.Handlers
         {
             //Arrange
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
-            Mock<IApplicationUserRepository> applicationRepository = new Mock<IApplicationUserRepository>();
+            Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             applicationRepository.Setup(s => s.GetUsers(
                 It.IsAny<String>(),
                  It.IsAny<String>(),
@@ -119,7 +119,7 @@ namespace WebShop.Users.Tests.Handlers
                 )).Throws<NotFoundException>();
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
             Mock<IMapper> mapper = new Mock<IMapper>();
-            mapper.Setup(m => m.Map<IEnumerable<ProfileView>>(It.IsAny<Object>())).Returns(new List<ProfileView>());
+            mapper.Setup(m => m.Map<IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<Object>())).Returns(new List<UserInfoDetailsViewDto>());
 
             var handler = new ProfileBrowseHandler(
                 unitOfWork.Object,
@@ -129,7 +129,7 @@ namespace WebShop.Users.Tests.Handlers
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await handler.HandleAsync(new ProfileBrowseQuery(new ProfileBrowse()));
+                await handler.HandleAsync(new ProfileBrowseQuery(new UserInfoViewDto()));
             });
 
         }

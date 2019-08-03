@@ -1,5 +1,4 @@
 ﻿using WebShop.Common.Exceptions;
-using WebShop.Users.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -23,6 +22,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebShop.Users.Common.Dtos;
 
 namespace WebShop.Users.Api.Extensions
 {

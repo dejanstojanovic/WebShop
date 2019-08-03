@@ -12,7 +12,7 @@ namespace WebShop.Users.Data
     public class ApplicationUsersUnitOfWork : IApplicationUsersUnitOfWork
     {
         bool _disposing = false;
-        private readonly IApplicationUserRepository _applicationUsers;
+        private readonly IApplicationUsersRepository _applicationUsers;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UserStore<ApplicationUser, IdentityRole, ApplicationDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>> _userStore;
 
@@ -23,12 +23,12 @@ namespace WebShop.Users.Data
             _userManager = userManager;
             _userStore = userStore as UserStore<ApplicationUser, IdentityRole, ApplicationDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>;
             _userStore.AutoSaveChanges = false;
-            _applicationUsers = new ApplicationUserRepository(_userStore.Context, userManager);
+            _applicationUsers = new ApplicationUsersRepository(_userStore.Context, userManager);
         }
 
         public IDatabaseTransaction BeginTransaction => new EntityDatabaseTransaction(_userStore.Context);
 
-        public IApplicationUserRepository ApplicationUsers => _applicationUsers;
+        public IApplicationUsersRepository ApplicationUsers => _applicationUsers;
 
         public async Task<int> SaveAsync()
         {

@@ -1,9 +1,9 @@
 ﻿using WebShop.Common.Exceptions;
 using WebShop.Users.Api.Controllers.v1;
-using WebShop.Users.Services;
-using WebShop.Users.Services.Commands;
-using WebShop.Users.Services.Queries;
-using WebShop.Users.Dtos.ApplicationUser;
+using WebShop.Users.Common;
+using WebShop.Users.Common.Commands;
+using WebShop.Users.Common.Queries;
+using WebShop.Users.Common.Dtos.ApplicationUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +41,7 @@ namespace WebShop.Users.Tests.Controllers.v1
                 );
 
             //Act
-            var result = await controller.Register(new Register() { });
+            var result = await controller.RegisterUser(new UserRegisterDto() { });
 
             //Assert
             Assert.NotNull(result);
@@ -61,7 +61,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<DuplicateException>(async () =>
             {
-                await controller.Register(new Register() { });
+                await controller.RegisterUser(new UserRegisterDto() { });
             });
 
             //NOTE: DuplicateException response handled byt the pipeline
@@ -75,13 +75,13 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileGetQuery, ProfileView>(It.IsAny<ProfileGetQuery>())).ReturnsAsync(new ProfileView());
+            queryDispatcher.Setup(s => s.HandleAsync<ProfileGetQuery, UserInfoDetailsViewDto>(It.IsAny<ProfileGetQuery>())).ReturnsAsync(new UserInfoDetailsViewDto());
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
 
             //Act
-            var result = await controller.GetById(Guid.NewGuid());
+            var result = await controller.FindUserById(Guid.NewGuid());
 
             //Assert
             Assert.NotNull(result);
@@ -93,7 +93,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileGetQuery, ProfileView>(It.IsAny<ProfileGetQuery>())).Throws<NotFoundException>();
+            queryDispatcher.Setup(s => s.HandleAsync<ProfileGetQuery, UserInfoDetailsViewDto>(It.IsAny<ProfileGetQuery>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
@@ -101,7 +101,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.GetById(Guid.NewGuid());
+                await controller.FindUserById(Guid.NewGuid());
             });
 
             //NOTE: NotFoundException response handled byt the pipeline
@@ -112,13 +112,13 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileBrowseQuery, IEnumerable<ProfileView>>(It.IsAny<ProfileBrowseQuery>())).ReturnsAsync(new List<ProfileView>() { new ProfileView() });
+            queryDispatcher.Setup(s => s.HandleAsync<ProfileBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<ProfileBrowseQuery>())).ReturnsAsync(new List<UserInfoDetailsViewDto>() { new UserInfoDetailsViewDto() });
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
 
             //Execute
-            var result = await controller.GetUsers(new ProfileBrowse());
+            var result = await controller.FindUsers(new UserInfoViewDto());
 
             //Assert
             Assert.NotNull(result);
@@ -130,7 +130,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileBrowseQuery, IEnumerable<ProfileView>>(It.IsAny<ProfileBrowseQuery>())).Throws<NotFoundException>();
+            queryDispatcher.Setup(s => s.HandleAsync<ProfileBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<ProfileBrowseQuery>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
@@ -138,7 +138,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.GetUsers(new ProfileBrowse());
+                await controller.FindUsers(new UserInfoViewDto());
             });
 
             //NOTE: NotFoundException response handled byt the pipeline
@@ -152,13 +152,13 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<ICommandDispatcher> commandDispatcher = new Mock<ICommandDispatcher>();
-            commandDispatcher.Setup(s => s.HandleAsync<UpdateProfileCommand>(It.IsAny<UpdateProfileCommand>())).Returns(Task.CompletedTask);
+            commandDispatcher.Setup(s => s.HandleAsync<UpdateUserInfoCommand>(It.IsAny<UpdateUserInfoCommand>())).Returns(Task.CompletedTask);
             var controller = new UsersController(
                 commandDispatcher: commandDispatcher.Object
                 );
             SetAuthenticationContext(controller);
             //Act
-            var result = await controller.UpdateProfile(new ProfileUpdate());
+            var result = await controller.UpdateUserInfo(new UserInfoUpdateDto());
 
             //Assert
             Assert.NotNull(result);
@@ -170,7 +170,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<ICommandDispatcher> commandDispatcher = new Mock<ICommandDispatcher>();
-            commandDispatcher.Setup(s => s.HandleAsync<UpdateProfileCommand>(It.IsAny<UpdateProfileCommand>())).Throws<NotFoundException>();
+            commandDispatcher.Setup(s => s.HandleAsync<UpdateUserInfoCommand>(It.IsAny<UpdateUserInfoCommand>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 commandDispatcher: commandDispatcher.Object
                 );
@@ -179,7 +179,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.UpdateProfile(new ProfileUpdate());
+                await controller.UpdateUserInfo(new UserInfoUpdateDto());
             });
 
             //NOTE: NotFoundException response handled byt the pipeline
@@ -191,7 +191,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<ICommandDispatcher> commandDispatcher = new Mock<ICommandDispatcher>();
-            commandDispatcher.Setup(s => s.HandleAsync<UpdatePasswordCommand>(It.IsAny<UpdatePasswordCommand>())).Returns(Task.CompletedTask);
+            commandDispatcher.Setup(s => s.HandleAsync<UpdateUserPasswordCommand>(It.IsAny<UpdateUserPasswordCommand>())).Returns(Task.CompletedTask);
             var controller = new UsersController(
                 commandDispatcher: commandDispatcher.Object
                 );
@@ -199,7 +199,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             SetAuthenticationContext(controller);
 
             //Act
-            var result = await controller.UpdatePassword(new PasswordUpdate());
+            var result = await controller.UpdateUserPassword(new UserPasswordUpdateDto());
 
             //Assert
             Assert.NotNull(result);
@@ -211,7 +211,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<ICommandDispatcher> commandDispatcher = new Mock<ICommandDispatcher>();
-            commandDispatcher.Setup(s => s.HandleAsync<UpdatePasswordCommand>(It.IsAny<UpdatePasswordCommand>())).Throws<NotFoundException>();
+            commandDispatcher.Setup(s => s.HandleAsync<UpdateUserPasswordCommand>(It.IsAny<UpdateUserPasswordCommand>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 commandDispatcher: commandDispatcher.Object
                 );
@@ -221,7 +221,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.UpdatePassword(new PasswordUpdate());
+                await controller.UpdateUserPassword(new UserPasswordUpdateDto());
             });
 
             //NOTE: NotFoundException response handled byt the pipeline

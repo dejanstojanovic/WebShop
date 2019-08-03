@@ -14,7 +14,7 @@ namespace WebShop.Users.Data.Extensions
             var serviceProvider = services.BuildServiceProvider();
             IConfiguration configuration = serviceProvider.GetService<IConfiguration>();
 
-            var migrationsAssembly = typeof(IApplicationUserRepository).Assembly;
+            var migrationsAssembly = typeof(IApplicationUsersRepository).Assembly;
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("WebShop.Users"),

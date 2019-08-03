@@ -8,7 +8,7 @@ namespace WebShop.Users.Data
 {
     public interface IApplicationUsersUnitOfWork:IDisposable
     {
-        IApplicationUserRepository ApplicationUsers { get; }
+        IApplicationUsersRepository ApplicationUsers { get; }
 
         /// <summary>
         /// Save change asynchronously
