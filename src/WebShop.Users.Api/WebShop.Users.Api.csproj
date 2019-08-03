@@ -9,6 +9,7 @@
     <Description>WebShop Users ASP.NET Core WebApi REST Service</Description>
     <InformationalVersion>00000000.0</InformationalVersion>
     <ProjectGuid>{663060fe-5552-4429-8252-3ff0081801ab}</ProjectGuid>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

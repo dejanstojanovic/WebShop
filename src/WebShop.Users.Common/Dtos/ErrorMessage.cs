@@ -7,7 +7,7 @@ namespace WebShop.Users.Common.Dtos
     /// <summary>
     /// Error message details
     /// </summary>
-    public class ErrorMessage
+    public class ErrorMessageDto
     {
         private readonly Exception exception;
 
@@ -15,7 +15,7 @@ namespace WebShop.Users.Common.Dtos
         /// Default class constructor
         /// </summary>
         /// <param name="ex"></param>
-        public ErrorMessage(Exception ex)
+        public ErrorMessageDto(Exception ex)
         {
             this.exception = ex;
         }

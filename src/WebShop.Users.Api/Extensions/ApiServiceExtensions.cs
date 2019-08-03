@@ -42,6 +42,10 @@ namespace WebShop.Users.Api.Extensions
             IConfiguration configuration = serviceProvider.GetService<IConfiguration>();
             IHostingEnvironment hostingEnvironment = serviceProvider.GetService<IHostingEnvironment>();
 
+            #region Routing
+            services.AddRouting(options => options.LowercaseUrls = true);
+            #endregion
+
             #region Caching
             services.AddDistributedMemoryCache();
             #endregion
@@ -106,7 +110,7 @@ namespace WebShop.Users.Api.Extensions
             {
                 var feature = context.Features.Get<IExceptionHandlerPathFeature>();
                 var exception = feature.Error;
-                var result = JsonConvert.SerializeObject(new ErrorMessage(exception));
+                var result = JsonConvert.SerializeObject(new ErrorMessageDto(exception));
                 context.Response.ContentType = "application/json";
 
                 if(exception is NotFoundException)

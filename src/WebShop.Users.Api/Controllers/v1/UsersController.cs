@@ -31,9 +31,9 @@ namespace WebShop.Users.Api.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [EnableCors("AllowAnyOrigin")]
-    [ProducesResponseType(typeof(ErrorMessage), 500)]
-    [ProducesResponseType(typeof(ErrorMessage), 404)]
-    [ProducesResponseType(typeof(ErrorMessage), 409)]
+    [ProducesResponseType(typeof(ErrorMessageDto), 500)]
+    [ProducesResponseType(typeof(ErrorMessageDto), 404)]
+    [ProducesResponseType(typeof(ErrorMessageDto), 409)]
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     public class UsersController : ControllerBase
@@ -164,7 +164,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="400">Invalid ID value</response>
         /// <response code="404">User image not found</response>
         /// <response code="500">Unrecoverable server error</response>
-        [HttpPost]
+        [HttpPost("image")]
         [RequestSizeLimit(524288)]
         [ProducesResponseType(201)]
         [SwaggerIgnore]
