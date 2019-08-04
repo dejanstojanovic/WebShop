@@ -6,9 +6,8 @@ using WebShop.Users.Common.Dtos.Roles;
 
 namespace WebShop.Users.Common.Queries
 {
-    public class RoleGetQuery: IQuery<RoleViewDto>
+    public class RoleGetClaimsQuery : IQuery<IEnumerable<RoleClaimViewDto>>
     {
-        public Guid Id { get; set; }
-
+        public String RoleName { get; set; }
     }
 }

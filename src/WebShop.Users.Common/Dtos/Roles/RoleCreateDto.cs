@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebShop.Users.Common.Dtos.Roles
 {
-    public class RoleCreateDto
+    public class RoleAddDto
     {
         public Guid Id { get; set; }
         public String Name { get; set; }

@@ -23,10 +23,6 @@
     <ProjectReference Include="..\WebShop.Users.Data\WebShop.Users.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Queries\Roles\" />
-  </ItemGroup>
-
 
   
 </Project>

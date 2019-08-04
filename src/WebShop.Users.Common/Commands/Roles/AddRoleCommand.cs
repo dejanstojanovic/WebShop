@@ -7,12 +7,13 @@ namespace WebShop.Users.Common.Commands
 {
    public class AddRoleCommand:ICommand
     {
-        public Guid UserId { get;  }
-        public String RoleNAme { get; }
+        public Guid RoleId { get;  }
+        public String RoleName { get; }
 
-        public AddRoleCommand(Guid userId, String roleName)
+        public AddRoleCommand(Guid roleId, String roleName)
         {
-            UserId = userId;
+            RoleId = roleId;
+            RoleName = roleName;
         }
     }
 }
