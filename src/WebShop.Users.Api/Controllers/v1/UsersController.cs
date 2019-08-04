@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebShop.Users.Common.Dtos.ApplicationUser;
-using WebShop.Users.Common;
+using WebShop.Users.Common.Dtos.Users;
 using WebShop.Users.Common.Commands;
 using WebShop.Users.Common.Queries;
-using AutoMapper;
-using WebShop.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using WebShop.Common.Validation;
 using WebShop.Messaging;
@@ -17,6 +13,7 @@ using WebShop.Users.Common.Dtos;
 using NSwag.Annotations;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebShop.Users.Api.Controllers.v1
 {
@@ -39,7 +36,14 @@ namespace WebShop.Users.Api.Controllers.v1
     public class UsersController : ControllerBase
     {
 
+        /// <summary>
+        /// Dependency injected CommandHandler instace
+        /// </summary>
         protected readonly ICommandDispatcher _commandDispather;
+
+        /// <summary>
+        /// Dependency injected QueryHandler instace
+        /// </summary>
         protected readonly IQueryDispatcher _queryDispather;
 
         /// <summary>
@@ -73,13 +77,13 @@ namespace WebShop.Users.Api.Controllers.v1
         {
             userRegister.Id = userRegister.Id != Guid.Empty ? userRegister.Id : Guid.NewGuid();
             await this._commandDispather.HandleAsync<RegisterUserCommand>(new RegisterUserCommand(userRegister));
-            return CreatedAtRoute(routeName: "User", routeValues:new { id = userRegister.Id }, value: userRegister.Id);
+            return CreatedAtRoute(routeName: "User", routeValues: new { id = userRegister.Id }, value: userRegister.Id);
         }
 
         /// <summary>
         /// Get user profile for the ID
         /// </summary>
-        /// <param name="id">Unique user identifier</param>
+        /// <param name="userId">Unique user identifier</param>
         /// <returns>User profile data</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -87,13 +91,12 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="400">Invalid ID value</response>
         /// <response code="404">User account for ID not found</response>
         /// <response code="500">Unrecoverable server error</response>
-        [HttpGet("{id}", Name = "User")]
+        [HttpGet("{userId}", Name = "User")]
         [ProducesResponseType(typeof(UserInfoDetailsViewDto), 200)]
-        public virtual async Task<IActionResult> FindUserById([FromRoute, NotEmptyGuid]Guid id)
+        public virtual async Task<IActionResult> FindUserById([FromRoute, NotEmptyGuid]Guid userId)
         {
-            return Ok(await this._queryDispather.HandleAsync<ProfileGetQuery, UserInfoDetailsViewDto>(new ProfileGetQuery() { Id = id }));
+            return Ok(await this._queryDispather.HandleAsync<UserGetQuery, UserInfoDetailsViewDto>(new UserGetQuery() { Id = userId }));
         }
-
 
         /// <summary>
         /// Query for user profile
@@ -110,12 +113,13 @@ namespace WebShop.Users.Api.Controllers.v1
         [ProducesResponseType(typeof(IEnumerable<UserInfoDetailsViewDto>), 200)]
         public virtual async Task<IActionResult> FindUsers([FromQuery]UserInfoViewDto profileBrowse)
         {
-            return Ok(await this._queryDispather.HandleAsync<ProfileBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(new ProfileBrowseQuery(profileBrowse)));
+            return Ok(await this._queryDispather.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(new UserBrowseQuery(profileBrowse)));
         }
 
         /// <summary>
         /// Updates user profile details
         /// </summary>
+        /// <param name="userId">Unique user identifier</param>
         /// <param name="profileUpdate">User profile details</param>
         /// <returns>Empty OK response</returns>
         /// <response code="204">User account profile updated</response>
@@ -124,11 +128,10 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="400">Invalid update value</response>
         /// <response code="404">User account for ID not found</response>
         /// <response code="500">Unrecoverable server error</response>
-        [HttpPut]
+        [HttpPut("{userId}")]
         [ProducesResponseType(204)]
-        public virtual async Task<IActionResult> UpdateUserInfo([FromBody]UserInfoUpdateDto profileUpdate)
+        public virtual async Task<IActionResult> UpdateUserInfo([FromRoute, NotEmptyGuid] Guid userId,[FromBody]UserInfoUpdateDto profileUpdate)
         {
-            var userId = Guid.Parse(User.Claims.First(c => c.Type.Equals("userid")).Value);
             await this._commandDispather.HandleAsync<UpdateUserInfoCommand>(new UpdateUserInfoCommand(userId, profileUpdate));
             return NoContent();
         }
@@ -136,6 +139,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Updates user password
         /// </summary>
+        /// <param name="userId">Unique user identifier</param>
         /// <param name="passwordUpdate">User password update details</param>
         /// <returns>Empty OK reponse</returns>
         /// <response code="204">User account password updated</response>
@@ -144,11 +148,10 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="400">Invalid update value</response>
         /// <response code="404">User account for ID not found</response>
         /// <response code="500">Unrecoverable server error</response>
-        [HttpPut("password")]
+        [HttpPut("{userId}/password")]
         [ProducesResponseType(204)]
-        public virtual async Task<IActionResult> UpdateUserPassword([FromBody]UserPasswordUpdateDto passwordUpdate)
+        public virtual async Task<IActionResult> UpdateUserPassword([FromRoute, NotEmptyGuid] Guid userId,[FromBody]UserPasswordUpdateDto passwordUpdate)
         {
-            var userId = Guid.Parse(User.Claims.First(c => c.Type.Equals("userid")).Value);
             await this._commandDispather.HandleAsync<UpdateUserPasswordCommand>(new UpdateUserPasswordCommand(userId, passwordUpdate));
             return NoContent();
         }
@@ -156,6 +159,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Sets user profile image
         /// </summary>
+        /// <param name="userId">Unique user identifier</param>
         /// <param name="file">Binary content of an image sent with key \"photo\" with headers Content-Type: multipart/form-data.\nMaximum file size is 500KB</param>
         /// <returns>No content 204 status code</returns>
         /// <response code="201">Image successfuly set</response>
@@ -164,13 +168,12 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="400">Invalid ID value</response>
         /// <response code="404">User image not found</response>
         /// <response code="500">Unrecoverable server error</response>
-        [HttpPost("image")]
+        [HttpPost("{userId}/image")]
         [RequestSizeLimit(524288)]
         [ProducesResponseType(201)]
         [SwaggerIgnore]
-        public virtual async Task<IActionResult> SetUserImage([FromForm(Name = "photo"), AllowedFileTypes(fileTypes: new String[] { ".jpg", ".jpeg" })]IFormFile file)
+        public virtual async Task<IActionResult> SetUserImage([FromRoute, NotEmptyGuid] Guid userId,[FromForm(Name = "photo"), AllowedFileTypes(fileTypes: new String[] { ".jpg", ".jpeg" })]IFormFile file)
         {
-            var userId = Guid.Parse(User.Claims.First(c => c.Type.Equals("userid")).Value);
             using (var memoryStream = new MemoryStream())
             {
                 await file.CopyToAsync(memoryStream);
@@ -178,7 +181,6 @@ namespace WebShop.Users.Api.Controllers.v1
             }
             return CreatedAtRoute(routeName: "Image", routeValues: new { userId = userId.ToString() }, value: null); ;
         }
-
 
         /// <summary>
         /// Get user profile image content
@@ -196,12 +198,13 @@ namespace WebShop.Users.Api.Controllers.v1
         [ProducesResponseType(typeof(FileContentResult), 200)]
         public virtual async Task<IActionResult> GetUserImage([FromRoute, NotEmptyGuid]Guid userId)
         {
-            return File(await _queryDispather.HandleAsync<ProfileImageGetQuery, byte[]>(new ProfileImageGetQuery(userId)), "image/jpg");
+            return File(await _queryDispather.HandleAsync<UserImageGetQuery, byte[]>(new UserImageGetQuery(userId)), "image/jpg");
         }
 
         /// <summary>
         /// Removes user profile image
         /// </summary>
+        /// <param name="userId">Unique user identifier</param>
         /// <returns>No content 204 status code</returns>
         /// <response code="204">Image removed</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -210,10 +213,9 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="404">User image not found</response>
         /// <response code="500">Unrecoverable server error</response>
         [ProducesResponseType(204)]
-        [HttpDelete("/image")]
-        public virtual async Task<IActionResult> DeleteUserImage()
+        [HttpDelete("{userId}/image")]
+        public virtual async Task<IActionResult> DeleteUserImage([FromRoute, NotEmptyGuid] Guid userId)
         {
-            var userId = Guid.Parse(User.Claims.First(c => c.Type.Equals("userid")).Value);
             await _commandDispather.HandleAsync<RemoveUserImageCommand>(new RemoveUserImageCommand(userId));
             return NoContent();
         }
@@ -233,8 +235,49 @@ namespace WebShop.Users.Api.Controllers.v1
         [ProducesResponseType(typeof(String), 200)]
         public virtual async Task<IActionResult> GetUserImageBase64([FromRoute, NotEmptyGuid]Guid userId)
         {
-            var data = await _queryDispather.HandleAsync<ProfileImageGetQuery, byte[]>(new ProfileImageGetQuery(userId));
+            var data = await _queryDispather.HandleAsync<UserImageGetQuery, byte[]>(new UserImageGetQuery(userId));
             return Ok(Convert.ToBase64String(data));
+        }
+
+        /// <summary>
+        /// Retiever all roles user belongs to
+        /// </summary>
+        /// <param name="userId">Unique user identifier</param>
+        /// <returns>List of role names user belongs to</returns>
+        [HttpGet("{userId}/roles", Name = "Roles")]
+        [ProducesResponseType(typeof(String), 200)]
+        public virtual async Task<IActionResult> GetUserRoles([FromRoute, NotEmptyGuid]Guid userId)
+        {
+            var data = await _queryDispather.HandleAsync<UserRolesGetQuery, IEnumerable<String>>(new UserRolesGetQuery() { UserId = userId });
+            return Ok(data);
+        }
+
+        /// <summary>
+        /// Removes user from the role
+        /// </summary>
+        /// <param name="userId">Unique user identifier</param>
+        /// <param name="roleName">Role name</param>
+        /// <returns>No content 204 status code</returns>
+        [HttpDelete("{userId}/roles/{roleName}")]
+        [ProducesResponseType(typeof(String), 200)]
+        public virtual async Task<IActionResult> RemoveUserRole([FromRoute, NotEmptyGuid]Guid userId, [FromRoute, Required] String roleName)
+        {
+            await _commandDispather.HandleAsync<RemoveUserRoleCommand>(new RemoveUserRoleCommand(userId, roleName));
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Assignes user to the role
+        /// </summary>
+        /// <param name="userId">Unique user identifier</param>
+        /// <param name="roleName">Role name</param>
+        /// <returns>No content 204 status code</returns>
+        [HttpPut("{userId}/roles/{roleName}")]
+        [ProducesResponseType(typeof(String), 200)]
+        public virtual async Task<IActionResult> AddUserRole([FromRoute, NotEmptyGuid]Guid userId, [FromRoute, Required] String roleName)
+        {
+            await _commandDispather.HandleAsync<AddUserRoleCommand>(new AddUserRoleCommand(userId, roleName));
+            return NoContent();
         }
 
     }

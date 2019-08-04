@@ -5,6 +5,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WebShop.Users.Data.Entities;
+using WebShop.Users.Data.Values;
+using System.Linq;
 
 namespace WebShop.Users.Data.Repositories
 {
@@ -19,9 +21,9 @@ namespace WebShop.Users.Data.Repositories
             _roleManager = roleManager;
         }
 
-        public async Task AddClaim(string roleName, Claim claim)
+        public async Task AddClaim(string roleName, RoleClaim claim)
         {
-            throw new NotImplementedException();
+            await _roleManager.AddClaimAsync(await GetRole(roleName), new Claim(claim.ClaimType, claim.ClaimValue));
         }
 
         public async Task AddRole(IdentityRole role)
@@ -29,9 +31,9 @@ namespace WebShop.Users.Data.Repositories
             await _roleManager.CreateAsync(role);
         }
 
-        public async Task<IEnumerable<Claim>> GetClaims(string roleName)
+        public async Task<IEnumerable<RoleClaim>> GetClaims(string roleName)
         {
-            throw new NotImplementedException();
+            return (await _roleManager.GetClaimsAsync(await GetRole(roleName))).Select(c=>new RoleClaim() { ClaimType = c.ValueType, ClaimValue = c.Value });
         }
 
         public async Task<IdentityRole> GetRole(string name)
@@ -44,9 +46,9 @@ namespace WebShop.Users.Data.Repositories
             return await _roleManager.FindByIdAsync(roleId.ToString());
         }
 
-        public Task RemoveClaim(string roleName, string claimType, string claimValue)
+        public async Task RemoveClaim(string roleName, RoleClaim claim)
         {
-            throw new NotImplementedException();
+            await _roleManager.RemoveClaimAsync(await GetRole(roleName), new Claim(claim.ClaimType, claim.ClaimValue));
         }
 
         public async Task RemoveRole(string name)

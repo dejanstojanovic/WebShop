@@ -15,20 +15,20 @@ using WebShop.Storage;
 
 namespace WebShop.Users.Common.Handlers
 {
-    public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
+    public class UserRegisterHandler : ICommandHandler<RegisterUserCommand>
     {
         private readonly IApplicationUsersUnitOfWork _applicationUsersUnitOfWork;
         private readonly IStorageService _imageStorage;
         private readonly IMessagePublisher<UserRegisteredEvent> _messagePublisher;
         private readonly IMapper _mapper;
-        private readonly ILogger<RegisterUserHandler> _logger;
+        private readonly ILogger<UserRegisterHandler> _logger;
 
-        public RegisterUserHandler(
+        public UserRegisterHandler(
             IApplicationUsersUnitOfWork applicationUsersUnitOfWork,
             IStorageService imageStorage,
             IMessagePublisher<UserRegisteredEvent> messagePublisher,
             IMapper mapper,
-            ILogger<RegisterUserHandler> logger)
+            ILogger<UserRegisterHandler> logger)
         {
             _applicationUsersUnitOfWork = applicationUsersUnitOfWork;
             _imageStorage = imageStorage;

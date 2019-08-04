@@ -14,12 +14,15 @@ namespace WebShop.Users.Data.Repositories
 
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         public ApplicationUsersRepository(
             ApplicationDbContext dbContext,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
-            this._dbContext = dbContext;
-            this._userManager = userManager;
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task CreateUser(ApplicationUser user, String password)
@@ -124,6 +127,28 @@ namespace WebShop.Users.Data.Repositories
         public async Task<IEnumerable<String>> GetRoles(Guid userId)
         {
             return await _userManager.GetRolesAsync(await GetUser(userId));
+        }
+
+        public async Task AddRole(Guid userId, string roleName)
+        {
+            await _userManager.AddToRoleAsync(await GetUser(userId), roleName);
+        }
+
+        public async Task AddRole(Guid userId, Guid roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            await _userManager.AddToRoleAsync(await GetUser(userId), role.Name);
+        }
+
+        public async Task RemoveRole(Guid userId, string roleName)
+        {
+            await _userManager.RemoveFromRoleAsync(await GetUser(userId), roleName);
+        }
+
+        public async Task RemoveRole(Guid userId, Guid roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            await _userManager.RemoveFromRoleAsync(await GetUser(userId), role.Name);
         }
     }
 }

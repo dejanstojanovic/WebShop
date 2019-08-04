@@ -3,7 +3,7 @@ using WebShop.Users.Api.Controllers.v1;
 using WebShop.Users.Common;
 using WebShop.Users.Common.Commands;
 using WebShop.Users.Common.Queries;
-using WebShop.Users.Common.Dtos.ApplicationUser;
+using WebShop.Users.Common.Dtos.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -75,7 +75,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileGetQuery, UserInfoDetailsViewDto>(It.IsAny<ProfileGetQuery>())).ReturnsAsync(new UserInfoDetailsViewDto());
+            queryDispatcher.Setup(s => s.HandleAsync<UserGetQuery, UserInfoDetailsViewDto>(It.IsAny<UserGetQuery>())).ReturnsAsync(new UserInfoDetailsViewDto());
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
@@ -93,7 +93,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileGetQuery, UserInfoDetailsViewDto>(It.IsAny<ProfileGetQuery>())).Throws<NotFoundException>();
+            queryDispatcher.Setup(s => s.HandleAsync<UserGetQuery, UserInfoDetailsViewDto>(It.IsAny<UserGetQuery>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
@@ -112,7 +112,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<ProfileBrowseQuery>())).ReturnsAsync(new List<UserInfoDetailsViewDto>() { new UserInfoDetailsViewDto() });
+            queryDispatcher.Setup(s => s.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<UserBrowseQuery>())).ReturnsAsync(new List<UserInfoDetailsViewDto>() { new UserInfoDetailsViewDto() });
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
@@ -130,7 +130,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<ProfileBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<ProfileBrowseQuery>())).Throws<NotFoundException>();
+            queryDispatcher.Setup(s => s.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<UserBrowseQuery>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );

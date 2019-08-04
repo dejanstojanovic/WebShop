@@ -1,7 +1,7 @@
 ﻿using WebShop.Common.Exceptions;
 using WebShop.Users.Common.Commands;
 using WebShop.Users.Common.Handlers;
-using WebShop.Users.Common.Dtos.ApplicationUser;
+using WebShop.Users.Common.Dtos.Users;
 using WebShop.Users.Data.Entities;
 using WebShop.Users.Data.Repositories;
 using Moq;
@@ -29,7 +29,7 @@ namespace WebShop.Users.Tests.Handlers
             Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             Mock<IStorageService> storageService = new Mock<IStorageService>();
-            Mock<ILogger<RegisterUserHandler>> logger = new Mock<ILogger<RegisterUserHandler>>();
+            Mock<ILogger<UserRegisterHandler>> logger = new Mock<ILogger<UserRegisterHandler>>();
 
             applicationRepository.Setup(r => r.CreateUser(It.IsAny<ApplicationUser>(), It.IsAny<String>())).Returns(Task.CompletedTask);
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
@@ -38,7 +38,7 @@ namespace WebShop.Users.Tests.Handlers
             Mock<IMessagePublisher<UserRegisteredEvent>> messagePublisher = new Mock<IMessagePublisher<UserRegisteredEvent>>();
             messagePublisher.Setup(p => p.Publish(It.IsAny<UserRegisteredEvent>())).Returns(Task.CompletedTask);
 
-            var handler = new RegisterUserHandler(
+            var handler = new UserRegisterHandler(
                 unitOfWork.Object,
                 storageService.Object,
                 messagePublisher.Object,
@@ -59,7 +59,7 @@ namespace WebShop.Users.Tests.Handlers
             Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             Mock<IStorageService> storageService = new Mock<IStorageService>();
-            Mock<ILogger<RegisterUserHandler>> logger = new Mock<ILogger<RegisterUserHandler>>();
+            Mock<ILogger<UserRegisterHandler>> logger = new Mock<ILogger<UserRegisterHandler>>();
 
             applicationRepository.Setup(r => r.CreateUser(It.IsAny<ApplicationUser>(), It.IsAny<String>())).Throws<DuplicateException>();
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
@@ -70,7 +70,7 @@ namespace WebShop.Users.Tests.Handlers
             messagePublisher.Setup(p => p.Publish(It.IsAny<UserRegisteredEvent>())).Returns(Task.CompletedTask);
 
 
-            var handler = new RegisterUserHandler(
+            var handler = new UserRegisterHandler(
                 unitOfWork.Object,
                 storageService.Object,
                 messagePublisher.Object,
@@ -94,7 +94,7 @@ namespace WebShop.Users.Tests.Handlers
             applicationRepository.Setup(r => r.UpdateProfile(It.IsAny<Guid>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>(),It.IsAny<String>())).Returns(Task.CompletedTask);
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
 
-            var handler = new UpdateProfileHandler(unitOfWork.Object);
+            var handler = new UserInfoUpdateHandler(unitOfWork.Object);
 
             //Act
             await handler.HandleAsync(new UpdateUserInfoCommand(Guid.NewGuid(),new UserInfoUpdateDto()));
@@ -110,7 +110,7 @@ namespace WebShop.Users.Tests.Handlers
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
             applicationRepository.Setup(r => r.UpdateProfile(It.IsAny<Guid>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>())).Throws<NotFoundException>();
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
-            var handler = new UpdateProfileHandler(unitOfWork.Object);
+            var handler = new UserInfoUpdateHandler(unitOfWork.Object);
 
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>

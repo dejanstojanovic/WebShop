@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace WebShop.Users.Common.Dtos.ApplicationUser
+namespace WebShop.Users.Common.Dtos.Users
 {
     /// <summary>
     /// User password update DTO

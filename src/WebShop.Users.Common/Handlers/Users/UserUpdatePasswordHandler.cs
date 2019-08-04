@@ -8,10 +8,10 @@ using WebShop.Messaging;
 
 namespace WebShop.Users.Common.Handlers
 {
-    public class UpdatePasswordHandler : ICommandHandler<UpdateUserPasswordCommand>
+    public class UserUpdatePasswordHandler : ICommandHandler<UpdateUserPasswordCommand>
     {
         private readonly IApplicationUsersUnitOfWork _applicationUsersUnitOfWork;
-        public UpdatePasswordHandler(IApplicationUsersUnitOfWork applicationUsersUnitOfWork)
+        public UserUpdatePasswordHandler(IApplicationUsersUnitOfWork applicationUsersUnitOfWork)
         {
             _applicationUsersUnitOfWork = applicationUsersUnitOfWork;
         }

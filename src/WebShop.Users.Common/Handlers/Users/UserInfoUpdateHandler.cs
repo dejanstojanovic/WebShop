@@ -8,10 +8,10 @@ using WebShop.Messaging;
 
 namespace WebShop.Users.Common.Handlers
 {
-    public class UpdateProfileHandler : ICommandHandler<UpdateUserInfoCommand>
+    public class UserInfoUpdateHandler : ICommandHandler<UpdateUserInfoCommand>
     {
         private readonly IApplicationUsersUnitOfWork _applicationUsersUnitOfWork;
-        public UpdateProfileHandler(IApplicationUsersUnitOfWork applicationUsersUnitOfWork)
+        public UserInfoUpdateHandler(IApplicationUsersUnitOfWork applicationUsersUnitOfWork)
         {
             _applicationUsersUnitOfWork = applicationUsersUnitOfWork;
         }

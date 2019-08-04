@@ -9,10 +9,10 @@ using WebShop.Storage;
 
 namespace WebShop.Users.Common.Handlers
 {
-    public class ProfileImageRemoveHandler : ICommandHandler<RemoveUserImageCommand>
+    public class UserImageRemoveHandler : ICommandHandler<RemoveUserImageCommand>
     {
         private readonly IStorageService _imageStorage;
-        public ProfileImageRemoveHandler(IStorageService imageStorage)
+        public UserImageRemoveHandler(IStorageService imageStorage)
         {
             _imageStorage = imageStorage;
         }

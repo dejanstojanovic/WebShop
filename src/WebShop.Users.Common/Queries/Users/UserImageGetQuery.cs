@@ -5,16 +5,16 @@ using WebShop.Messaging;
 
 namespace WebShop.Users.Common.Queries
 {
-    public class ProfileImageGetQuery:IQuery<byte[]>
+    public class UserImageGetQuery:IQuery<byte[]>
     {
         public Guid UserId { get; set; }
 
-        public ProfileImageGetQuery()
+        public UserImageGetQuery()
         {
 
         }
 
-        public ProfileImageGetQuery(Guid userId)
+        public UserImageGetQuery(Guid userId)
         {
             this.UserId = userId;
         }

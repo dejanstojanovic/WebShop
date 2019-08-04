@@ -28,5 +28,10 @@ namespace WebShop.Users.Data.Repositories
             String email,
             int pageindex, int pageSize);
         Task<IEnumerable<String>> GetRoles(Guid userId);
+        Task AddRole(Guid userId, String roleName);
+        Task AddRole(Guid userId, Guid roleId);
+        Task RemoveRole(Guid userId, String roleName);
+        Task RemoveRole(Guid userId, Guid roleId);
+
     }
 }

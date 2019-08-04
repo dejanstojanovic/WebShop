@@ -1,4 +1,4 @@
-﻿using WebShop.Users.Common.Dtos.ApplicationUser;
+﻿using WebShop.Users.Common.Dtos.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,7 +6,7 @@ using WebShop.Messaging;
 
 namespace WebShop.Users.Common.Queries
 {
-    public class ProfileBrowseQuery : IQuery<IEnumerable<UserInfoDetailsViewDto>>
+    public class UserBrowseQuery : IQuery<IEnumerable<UserInfoDetailsViewDto>>
     {
         public String FirstName { get; set; }
         public String LastName { get; set; }
@@ -18,7 +18,7 @@ namespace WebShop.Users.Common.Queries
         public String Education { get; set; }
 
 
-        public ProfileBrowseQuery(UserInfoViewDto profileBrowse)
+        public UserBrowseQuery(UserInfoViewDto profileBrowse)
         {
             this.Email = profileBrowse.Email;
             this.DateOfBirth = profileBrowse.DateOfBirth;

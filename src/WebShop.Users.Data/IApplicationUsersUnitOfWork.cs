@@ -14,7 +14,7 @@ namespace WebShop.Users.Data
         /// Save change asynchronously
         /// </summary>
         /// <returns></returns>
-        Task<int> SaveAsync();
+        Task SaveAsync();
 
         /// <summary>
         /// Creates trnasaction of the dbContext of the unitOfWork instance

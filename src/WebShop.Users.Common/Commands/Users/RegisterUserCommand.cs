@@ -1,4 +1,4 @@
-﻿using WebShop.Users.Common.Dtos.ApplicationUser;
+﻿using WebShop.Users.Common.Dtos.Users;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

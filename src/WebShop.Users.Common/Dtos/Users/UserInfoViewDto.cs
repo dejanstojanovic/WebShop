@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebShop.Users.Common.Dtos.ApplicationUser
+namespace WebShop.Users.Common.Dtos.Users
 {
     /// <summary>
     /// User's profile view DTO
     /// </summary>
-    public class UserInfoDetailsViewDto
+    public class UserInfoViewDto
     {
-        /// <summary>
-        /// Unique user identifier
-        /// </summary>
-        public Guid Id { get; set; }
-
         /// <summary>
         /// User's first name
         /// </summary>
@@ -43,5 +38,15 @@ namespace WebShop.Users.Common.Dtos.ApplicationUser
         /// User's education
         /// </summary>
         public String Education { get; set; }
+
+        /// <summary>
+        /// Page index to be returned (starting from 0)
+        /// </summary>
+        public int PageIndex { get; set; }
+
+        /// <summary>
+        /// Number of item s to be returned in a result
+        /// </summary>
+        public int PageSize { get; set; }
     }
 }

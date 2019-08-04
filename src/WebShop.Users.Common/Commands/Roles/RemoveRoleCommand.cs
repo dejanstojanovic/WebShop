@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebShop.Messaging;
 
 namespace WebShop.Users.Common.Commands
 {
-    class RemoveRoleCommand
+   public class RemoveRoleCommand : ICommand
     {
     }
 }

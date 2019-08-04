@@ -13,26 +13,37 @@ namespace WebShop.Users.Data
     {
         bool _disposing = false;
         private readonly IApplicationUsersRepository _applicationUsers;
+        private readonly IApplicationRolesRepository _applicationRoles;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserStore<ApplicationUser, IdentityRole, ApplicationDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>> _userStore;
+        private readonly RoleStore<IdentityRole> _roleStore;
 
             public ApplicationUsersUnitOfWork(
             UserManager<ApplicationUser> userManager,
-            IUserStore<ApplicationUser> userStore)
+            RoleManager<IdentityRole> roleManager,
+            IUserStore<ApplicationUser> userStore,
+            IRoleStore<IdentityRole> roleStore)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
+            _roleStore = roleStore as RoleStore<IdentityRole>;
             _userStore = userStore as UserStore<ApplicationUser, IdentityRole, ApplicationDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>;
             _userStore.AutoSaveChanges = false;
-            _applicationUsers = new ApplicationUsersRepository(_userStore.Context, userManager);
+            _roleStore.AutoSaveChanges = false;
+
+            _applicationUsers = new ApplicationUsersRepository(_userStore.Context, _userManager, _roleManager);
+            _applicationRoles = new ApplicationRolesRepository(_userManager, _roleManager);
         }
 
         public IDatabaseTransaction BeginTransaction => new EntityDatabaseTransaction(_userStore.Context);
 
         public IApplicationUsersRepository ApplicationUsers => _applicationUsers;
 
-        public async Task<int> SaveAsync()
+        public async Task SaveAsync()
         {
-            return await _userStore.Context.SaveChangesAsync();
+            await _userStore.Context.SaveChangesAsync();
+            //await _roleStore.Context.SaveChangesAsync();
         }
 
         public void Dispose()

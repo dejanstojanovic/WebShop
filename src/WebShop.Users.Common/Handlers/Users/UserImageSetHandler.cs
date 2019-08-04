@@ -1,4 +1,4 @@
-﻿using WebShop.Users.Common.Queries;
+﻿using WebShop.Users.Common.Commands;
 using WebShop.Users.Data.Repositories;
 using System;
 using System.Collections.Generic;
@@ -9,17 +9,19 @@ using WebShop.Storage;
 
 namespace WebShop.Users.Common.Handlers
 {
-    public class ProfileImageGetHandler : IQueryHandler<ProfileImageGetQuery, byte[]>
+    public class UserImageSetHandler : ICommandHandler<SetUserImageCommand>
     {
         private readonly IStorageService _imageStorage;
-        public ProfileImageGetHandler(IStorageService imageStorage)
+        public UserImageSetHandler(IStorageService imageStorage)
         {
             _imageStorage = imageStorage;
         }
-        public async Task<byte[]> HandleAsync(ProfileImageGetQuery query)
+
+        public async Task HandleAsync(SetUserImageCommand command)
         {
-            var data = await _imageStorage.Get($"{query.UserId.ToString()}.jpg");
-            return data;
+            await _imageStorage.Put(command.Image, $"{command.UserId.ToString()}.jpg");
         }
+
+        public void Dispose() { }
     }
 }
