@@ -97,10 +97,32 @@ namespace WebShop.Users.Api.Controllers.v1
         }
 
         /// <summary>
+        /// Removes role
+        /// </summary>
+        /// <param name="roleName">Role name</param>
+        /// <param name="removeRoleCommand">Claim to be assigned to role with specific name</param>
+        /// <returns>Empty response</returns>
+        /// <response code="204">Empty response</response>
+        /// <response code="401">Not authenticated to perform request</response>
+        /// <response code="403">Not authorized to perform request</response>
+        /// <response code="400">Invalid role name value</response>
+        /// <response code="404">Role not found</response>
+        /// <response code="500">Unrecoverable server error</response>
+        [HttpDelete("{roleName}")]
+        [ProducesResponseType(204)]
+        public virtual async Task<IActionResult> DeleteRole(
+            [FromRoute, Required]String roleName,
+            [ModelBinder(BinderType = typeof(RoleCommandModelBinder))]RemoveRoleCommand removeRoleCommand)
+        {
+            await this._commandDispather.HandleAsync<RemoveRoleCommand>(removeRoleCommand);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Get role claims
         /// </summary>
         /// <param name="getRoleClaimsQuery">Role name</param>
-        /// <returns>Role details</returns>
+        /// <returns>List of role claims</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
         /// <response code="403">Not authorized to perform request</response>
@@ -108,7 +130,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="404">Role not found</response>
         /// <response code="500">Unrecoverable server error</response>
         [HttpGet("{roleName}/claims")]
-        [ProducesResponseType(typeof(RoleViewDto), 200)]
+        [ProducesResponseType(typeof(IEnumerable<RoleClaimViewDto>), 200)]
         public virtual async Task<IActionResult> GetRoleClaims(
             [FromRoute, Required][ModelBinder(BinderType = typeof(RoleCommandModelBinder))] RoleGetClaimsQuery getRoleClaimsQuery)
         {
@@ -119,21 +141,42 @@ namespace WebShop.Users.Api.Controllers.v1
         /// Adds claim to a role
         /// </summary>
         /// <param name="roleName">Role name</param>
-        /// <param name="roleClaimCommand">Claim to be assigned to name</param>
-        /// <returns>Role details</returns>
-        /// <response code="200">User account details</response>
+        /// <param name="roleClaimCommand">Claim to be assigned to role with specific name</param>
+        /// <returns>Empty response</returns>
+        /// <response code="204">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
         /// <response code="403">Not authorized to perform request</response>
         /// <response code="400">Invalid role name value</response>
         /// <response code="404">Role not found</response>
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{roleName}/claims")]
-        [ProducesResponseType(typeof(RoleViewDto), 200)]
+        [ProducesResponseType(204)]
         public virtual async Task<IActionResult> AddRoleClaim([FromRoute, Required]String roleName,
             [ModelBinder(BinderType = typeof(RoleCommandModelBinder))]AddRoleClaimCommand roleClaimCommand)
         {
             await this._commandDispather.HandleAsync<AddRoleClaimCommand>(roleClaimCommand);
-            return Ok();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Removes claim from a role with specific name
+        /// </summary>
+        /// <param name="roleName">Role name</param>
+        /// <param name="removeRoleClaimCommand">Claim to be removed from the role</param>
+        /// <returns>Empty response</returns>
+        /// <response code="204">User account details</response>
+        /// <response code="401">Not authenticated to perform request</response>
+        /// <response code="403">Not authorized to perform request</response>
+        /// <response code="400">Invalid role name value</response>
+        /// <response code="404">Role not found</response>
+        /// <response code="500">Unrecoverable server error</response>
+        [HttpDelete("{roleName}/claims")]
+        [ProducesResponseType(204)]
+        public virtual async Task<IActionResult> AddRoleClaim([FromRoute, Required]String roleName,
+            [ModelBinder(BinderType = typeof(RoleCommandModelBinder))]RemoveRoleClaimCommand removeRoleClaimCommand)
+        {
+            await this._commandDispather.HandleAsync<RemoveRoleClaimCommand>(removeRoleClaimCommand);
+            return NoContent();
         }
 
 
