@@ -79,7 +79,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Get role by name
         /// </summary>
-        /// <param name="roleName">Role name</param>
+        /// <param name="roleFilterQuery">Role name</param>
         /// <returns>Role details</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -89,15 +89,17 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpGet("{roleName}", Name = "Role")]
         [ProducesResponseType(typeof(RoleViewDto), 200)]
-        public virtual async Task<IActionResult> FindRoleByName([FromRoute, Required]String roleName)
+        [AllowAnonymous]
+        public virtual async Task<IActionResult> FindRoleByName(
+            [FromRoute, Required][ModelBinder(BinderType = typeof(RoleCommandModelBinder))]RoleGetQuery roleFilterQuery)
         {
-            return Ok(await this._queryDispather.HandleAsync<RoleGetQuery, RoleViewDto>(new RoleGetQuery() { RoleName = roleName }));
+            return Ok(await this._queryDispather.HandleAsync<RoleGetQuery, RoleViewDto>(roleFilterQuery));
         }
 
         /// <summary>
-        /// Get role by name
+        /// Get role claims
         /// </summary>
-        /// <param name="roleName">Role name</param>
+        /// <param name="getRoleClaimsQuery">Role name</param>
         /// <returns>Role details</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -107,13 +109,14 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpGet("{roleName}/claims")]
         [ProducesResponseType(typeof(RoleViewDto), 200)]
-        public virtual async Task<IActionResult> GetRoleClaims([FromRoute, Required]String roleName)
+        public virtual async Task<IActionResult> GetRoleClaims(
+            [FromRoute, Required][ModelBinder(BinderType = typeof(RoleCommandModelBinder))] RoleGetClaimsQuery getRoleClaimsQuery)
         {
-            return Ok(await this._queryDispather.HandleAsync<RoleGetClaimsQuery, IEnumerable<RoleClaimViewDto>>(new RoleGetClaimsQuery() { RoleName = roleName }));
+            return Ok(await this._queryDispather.HandleAsync<RoleGetClaimsQuery, IEnumerable<RoleClaimViewDto>>(getRoleClaimsQuery));
         }
 
         /// <summary>
-        /// Get role by name
+        /// Adds claim to a role
         /// </summary>
         /// <param name="roleName">Role name</param>
         /// <param name="roleClaimCommand">Claim to be assigned to name</param>
@@ -126,7 +129,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{roleName}/claims")]
         [ProducesResponseType(typeof(RoleViewDto), 200)]
-        public virtual async Task<IActionResult> GetRoleClaims([FromRoute, Required]String roleName,
+        public virtual async Task<IActionResult> AddRoleClaim([FromRoute, Required]String roleName,
             [ModelBinder(BinderType = typeof(RoleCommandModelBinder))]AddRoleClaimCommand roleClaimCommand)
         {
             await this._commandDispather.HandleAsync<AddRoleClaimCommand>(roleClaimCommand);

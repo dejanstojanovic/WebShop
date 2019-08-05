@@ -11,7 +11,7 @@ namespace WebShop.Users.Common.Commands
 {
     public class RegisterUserCommand : ICommand
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
         [Required(ErrorMessage = "First name value is mandatory")]
         public String FirstName { get; }
         [Required(ErrorMessage = "Last name value is mandatory")]
@@ -22,14 +22,14 @@ namespace WebShop.Users.Common.Commands
         [Required(ErrorMessage = "Password value is mandatory")]
         public String Password { get; }
 
-        public DateTime DateOfBirth { get;  }
+        public DateTime DateOfBirth { get; }
         public String Occupation { get; }
-        public String Education { get;  }
+        public String Education { get; }
         public byte[] Image { get; }
         [JsonConstructor]
-        public RegisterUserCommand(Guid id, String firstName, String lastName, DateTime dateOfBirth, String occupation, String education,  String email, String password, byte[] image = null)
+        public RegisterUserCommand(Guid id, String firstName, String lastName, DateTime dateOfBirth, String occupation, String education, String email, String password, byte[] image = null)
         {
-            this.Id = id==Guid.Empty ? Guid.NewGuid(): id;
+            this.Id = id == Guid.Empty ? Guid.NewGuid() : id;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Email = email;
