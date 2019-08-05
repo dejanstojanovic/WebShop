@@ -95,7 +95,7 @@ namespace WebShop.Users.Tests.Handlers
                 );
 
             //Act
-            var result = await handler.HandleAsync(new UserFilterQuery(new UserInfoViewDto()));
+            var result = await handler.HandleAsync(new UserFilterQuery());
 
             //Assert
             Assert.NotNull(result);
@@ -129,7 +129,7 @@ namespace WebShop.Users.Tests.Handlers
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await handler.HandleAsync(new UserFilterQuery(new UserInfoViewDto()));
+                await handler.HandleAsync(new UserFilterQuery());
             });
 
         }

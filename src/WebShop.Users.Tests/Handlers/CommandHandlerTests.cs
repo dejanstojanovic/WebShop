@@ -46,7 +46,17 @@ namespace WebShop.Users.Tests.Handlers
                 logger.Object);
 
             //Act
-             await handler.HandleAsync(new RegisterUserCommand(new UserRegisterDto()));
+             await handler.HandleAsync(new RegisterUserCommand(
+                 id:Guid.NewGuid(),
+                 firstName:String.Empty,
+                 lastName: String.Empty,
+                 password: String.Empty,
+                 email: String.Empty,
+                 education: String.Empty,
+                 occupation: String.Empty,
+                 dateOfBirth:DateTime.Now,
+                 image:null
+                 ));
 
             //Assert
             
@@ -80,7 +90,17 @@ namespace WebShop.Users.Tests.Handlers
             //Act/Assert
             await Assert.ThrowsAsync<DuplicateException>(async () =>
             {
-                await handler.HandleAsync(new RegisterUserCommand(new UserRegisterDto()));
+                await handler.HandleAsync(new RegisterUserCommand(
+                 id: Guid.NewGuid(),
+                 firstName: String.Empty,
+                 lastName: String.Empty,
+                 password: String.Empty,
+                 email: String.Empty,
+                 education: String.Empty,
+                 occupation: String.Empty,
+                 dateOfBirth: DateTime.Now,
+                 image: null
+                 ));
             });
 
         }
@@ -97,7 +117,14 @@ namespace WebShop.Users.Tests.Handlers
             var handler = new UserInfoUpdateHandler(unitOfWork.Object);
 
             //Act
-            await handler.HandleAsync(new UpdateUserInfoCommand(Guid.NewGuid(),new UserInfoUpdateDto()));
+            await handler.HandleAsync(new UpdateUserInfoCommand(
+                id:Guid.NewGuid(),
+                firstName:String.Empty,
+                lastName: String.Empty,
+                education: String.Empty,
+                occupation: String.Empty,
+                dateOfBirth: DateTime.Now
+                ));
 
             //Assert
         }
@@ -115,7 +142,14 @@ namespace WebShop.Users.Tests.Handlers
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await handler.HandleAsync(new UpdateUserInfoCommand(Guid.NewGuid(), new UserInfoUpdateDto()));
+                await handler.HandleAsync(new UpdateUserInfoCommand(
+                id: Guid.NewGuid(),
+                firstName: String.Empty,
+                lastName: String.Empty,
+                education: String.Empty,
+                occupation: String.Empty,
+                dateOfBirth: DateTime.Now
+                ));
             });
         }
 

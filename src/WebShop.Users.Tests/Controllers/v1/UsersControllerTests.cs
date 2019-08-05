@@ -41,7 +41,17 @@ namespace WebShop.Users.Tests.Controllers.v1
                 );
 
             //Act
-            var result = await controller.RegisterUser(new UserRegisterDto() { });
+            var result = await controller.RegisterUser(new RegisterUserCommand(
+                id:Guid.NewGuid(),
+                email:string.Empty,
+                firstName:String.Empty,
+                lastName:String.Empty,
+                occupation:String.Empty,
+                education:String.Empty,
+                password:String.Empty,
+                dateOfBirth:DateTime.Now,
+                image:null
+                ) { });
 
             //Assert
             Assert.NotNull(result);
@@ -61,7 +71,18 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<DuplicateException>(async () =>
             {
-                await controller.RegisterUser(new UserRegisterDto() { });
+                await controller.RegisterUser(new RegisterUserCommand(
+                id: Guid.NewGuid(),
+                email: string.Empty,
+                firstName: String.Empty,
+                lastName: String.Empty,
+                occupation: String.Empty,
+                education: String.Empty,
+                password: String.Empty,
+                dateOfBirth: DateTime.Now,
+                image: null
+                )
+                { });
             });
 
             //NOTE: DuplicateException response handled byt the pipeline
@@ -118,7 +139,7 @@ namespace WebShop.Users.Tests.Controllers.v1
                 );
 
             //Execute
-            var result = await controller.FindUsers(new UserInfoViewDto());
+            var result = await controller.FindUsers(new UserFilterQuery());
 
             //Assert
             Assert.NotNull(result);
@@ -138,7 +159,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.FindUsers(new UserInfoViewDto());
+                await controller.FindUsers(new UserFilterQuery());
             });
 
             //NOTE: NotFoundException response handled byt the pipeline
@@ -158,7 +179,14 @@ namespace WebShop.Users.Tests.Controllers.v1
                 );
             SetAuthenticationContext(controller);
             //Act
-            var result = await controller.UpdateUserInfo(new UserInfoUpdateDto());
+            var result = await controller.UpdateUserInfo(Guid.NewGuid(),new UpdateUserInfoCommand(
+                id:Guid.Empty,
+                firstName:String.Empty,
+                lastName:String.Empty,
+                education:String.Empty,
+                occupation:String.Empty,
+                dateOfBirth:DateTime.Now
+                ));
 
             //Assert
             Assert.NotNull(result);
@@ -179,7 +207,14 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.UpdateUserInfo(new UserInfoUpdateDto());
+                await controller.UpdateUserInfo(Guid.NewGuid(),new UpdateUserInfoCommand(
+                id: Guid.Empty,
+                firstName: String.Empty,
+                lastName: String.Empty,
+                education: String.Empty,
+                occupation: String.Empty,
+                dateOfBirth: DateTime.Now
+                ));
             });
 
             //NOTE: NotFoundException response handled byt the pipeline
@@ -199,7 +234,11 @@ namespace WebShop.Users.Tests.Controllers.v1
             SetAuthenticationContext(controller);
 
             //Act
-            var result = await controller.UpdateUserPassword(new UserPasswordUpdateDto());
+            var result = await controller.UpdateUserPassword(Guid.NewGuid(),new UpdateUserPasswordCommand(
+                userId:Guid.Empty,
+                oldPassword:String.Empty,
+                newPassword:String.Empty
+                ));
 
             //Assert
             Assert.NotNull(result);
@@ -221,7 +260,11 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.UpdateUserPassword(new UserPasswordUpdateDto());
+                await controller.UpdateUserPassword(Guid.Empty,new UpdateUserPasswordCommand(
+                userId: Guid.Empty,
+                oldPassword: String.Empty,
+                newPassword: String.Empty
+                ));
             });
 
             //NOTE: NotFoundException response handled byt the pipeline
