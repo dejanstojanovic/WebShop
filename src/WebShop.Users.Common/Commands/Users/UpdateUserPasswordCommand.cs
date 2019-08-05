@@ -13,9 +13,9 @@ namespace WebShop.Users.Common.Commands
     {
         [NotEmptyGuid]
         public Guid UserId { get; }
-        [Required]
+        [Required(ErrorMessage = "Old password value is mandatory")]
         public String OldPassword { get; }
-        [Required]
+        [Required(ErrorMessage = "New password value is mandatory")]
         public String NewPassword { get; }
 
         [JsonConstructor]

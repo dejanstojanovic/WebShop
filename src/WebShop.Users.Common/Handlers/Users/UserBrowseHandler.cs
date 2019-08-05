@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WebShop.Users.Common.Handlers
 {
-    public class UserBrowseHandler : IQueryHandler<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>
+    public class UserBrowseHandler : IQueryHandler<UserFilterQuery, IEnumerable<UserInfoDetailsViewDto>>
     {
         private readonly IApplicationUsersUnitOfWork _applicationUsersUnitOfWork;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace WebShop.Users.Common.Handlers
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserInfoDetailsViewDto>> HandleAsync(UserBrowseQuery query)
+        public async Task<IEnumerable<UserInfoDetailsViewDto>> HandleAsync(UserFilterQuery query)
         {
             return _mapper.Map<IEnumerable<UserInfoDetailsViewDto>>(await _applicationUsersUnitOfWork.ApplicationUsers.GetUsers(
                 query.FirstName,

@@ -19,6 +19,7 @@ using WebShop.Common.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Serilog;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 
 namespace WebShop.Users.Api
 {
@@ -84,7 +85,15 @@ namespace WebShop.Users.Api
             });
 
             services.AddSwaggerApiDocumentation();
-            services.AddMvc();
+            services.AddMvc().AddDataAnnotationsLocalization(options =>
+            {
+                options.DataAnnotationLocalizerProvider = (type, factory) =>
+                {
+                    //Point to assembly with embeded resources
+                    var assemblyName = new AssemblyName(typeof(ApplicationUserServices).GetTypeInfo().Assembly.FullName);
+                    return factory.Create("Translations", assemblyName.Name);
+                };
+            }); ;
         }
 
         /// <summary>

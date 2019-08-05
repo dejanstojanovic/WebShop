@@ -6,7 +6,7 @@ using WebShop.Messaging;
 
 namespace WebShop.Users.Common.Queries
 {
-    public class UserBrowseQuery : IQuery<IEnumerable<UserInfoDetailsViewDto>>
+    public class UserFilterQuery : IQuery<IEnumerable<UserInfoDetailsViewDto>>
     {
         public String FirstName { get; set; }
         public String LastName { get; set; }
@@ -18,16 +18,6 @@ namespace WebShop.Users.Common.Queries
         public String Education { get; set; }
 
 
-        public UserBrowseQuery(UserFilterDto userFilter)
-        {
-            this.Email = userFilter.Email;
-            this.DateOfBirth = userFilter.DateOfBirth;
-            this.Education = userFilter.Education;
-            this.FirstName = userFilter.FirstName;
-            this.LastName = userFilter.LastName;
-            this.PageIndex = userFilter.PageIndex;
-            this.PageSize = userFilter.PageSize;
-        }
 
     }
 }

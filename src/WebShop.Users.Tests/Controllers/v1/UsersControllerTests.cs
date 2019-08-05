@@ -112,7 +112,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<UserBrowseQuery>())).ReturnsAsync(new List<UserInfoDetailsViewDto>() { new UserInfoDetailsViewDto() });
+            queryDispatcher.Setup(s => s.HandleAsync<UserFilterQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<UserFilterQuery>())).ReturnsAsync(new List<UserInfoDetailsViewDto>() { new UserInfoDetailsViewDto() });
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );
@@ -130,7 +130,7 @@ namespace WebShop.Users.Tests.Controllers.v1
         {
             //Arrange
             Mock<IQueryDispatcher> queryDispatcher = new Mock<IQueryDispatcher>();
-            queryDispatcher.Setup(s => s.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<UserBrowseQuery>())).Throws<NotFoundException>();
+            queryDispatcher.Setup(s => s.HandleAsync<UserFilterQuery, IEnumerable<UserInfoDetailsViewDto>>(It.IsAny<UserFilterQuery>())).Throws<NotFoundException>();
             var controller = new UsersController(
                 queryDispatcher: queryDispatcher.Object
                 );

@@ -12,14 +12,14 @@ namespace WebShop.Users.Common.Commands
     public class RegisterUserCommand : ICommand
     {
         public Guid Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "First name value is mandatory")]
         public String FirstName { get; }
-        [Required]
+        [Required(ErrorMessage = "Last name value is mandatory")]
         public String LastName { get; }
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email address value is mandatory")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public String Email { get; }
-        [Required]
+        [Required(ErrorMessage = "Password value is mandatory")]
         public String Password { get; }
 
         public DateTime DateOfBirth { get;  }

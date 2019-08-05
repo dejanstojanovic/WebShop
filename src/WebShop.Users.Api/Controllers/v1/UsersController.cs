@@ -101,7 +101,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Query for user profile
         /// </summary>
-        /// <param name="userFilter">Query filter values</param>
+        /// <param name="userFilterQuery">Query filter values</param>
         /// <returns>Collection of user profiles</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -111,9 +111,9 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserInfoDetailsViewDto>), 200)]
-        public virtual async Task<IActionResult> FindUsers([FromQuery]UserFilterDto userFilter)
+        public virtual async Task<IActionResult> FindUsers([FromQuery]UserFilterQuery userFilterQuery)
         {
-            return Ok(await this._queryDispather.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(new UserBrowseQuery(userFilter)));
+            return Ok(await this._queryDispather.HandleAsync<UserFilterQuery, IEnumerable<UserInfoDetailsViewDto>>(userFilterQuery));
         }
 
         /// <summary>
