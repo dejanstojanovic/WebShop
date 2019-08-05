@@ -8,6 +8,7 @@ namespace WebShop.Users.Common.Commands
 {
    public  class AddRoleClaimCommand:ICommand
     {
+        [JsonIgnore]
         public String RoleName { get; }
         public String ClaimName { get;  }
         public String ClaimType { get;  }

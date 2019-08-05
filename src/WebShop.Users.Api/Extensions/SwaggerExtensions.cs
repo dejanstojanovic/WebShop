@@ -75,6 +75,7 @@ namespace WebShop.Users.Api.Extensions
                     options.OperationFilter<SwaggerDefaultValues>();
                     options.OperationFilter<SwaggerLanguageHeader>();
                     options.OperationFilter<SwaggerFileOperationFilter>();
+                    options.SchemaFilter<SwaggerReadOnlySchemaFilter>();
 
                     // Tells swagger to pick up the output XML document files
                     var currentAssembly = Assembly.GetExecutingAssembly();

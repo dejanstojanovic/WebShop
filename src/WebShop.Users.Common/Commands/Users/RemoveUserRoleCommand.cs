@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -10,6 +11,7 @@ namespace WebShop.Users.Common.Commands
     public class RemoveUserRoleCommand:ICommand
     {
         [NotEmptyGuid]
+        [JsonIgnore]
         public Guid UserId { get; }
         [Required]
         public String RoleName { get; }

@@ -8,6 +8,7 @@ namespace WebShop.Users.Common.Commands
 {
     public class RemoveRoleCommand:ICommand
     {
+        [JsonIgnore]
         public String RoleName { get; }
 
         [JsonConstructor]

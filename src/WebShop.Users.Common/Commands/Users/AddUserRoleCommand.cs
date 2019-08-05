@@ -11,6 +11,7 @@ namespace WebShop.Users.Common.Commands
     public class AddUserRoleCommand:ICommand
     {
         [NotEmptyGuid]
+        [JsonIgnore]
         public Guid UserId { get; }
 
         [Required]

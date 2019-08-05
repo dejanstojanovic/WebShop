@@ -10,6 +10,7 @@ namespace WebShop.Users.Common.Commands
    public class RemoveRoleClaimCommand : ICommand
     {
         [Required]
+        [JsonIgnore]
         public String RoleName { get; }
         [Required]
         public String ClaimType { get;  }

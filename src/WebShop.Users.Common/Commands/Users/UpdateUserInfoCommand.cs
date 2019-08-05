@@ -12,6 +12,7 @@ namespace WebShop.Users.Common.Commands
     public class UpdateUserInfoCommand:ICommand
     {
         [NotEmptyGuid]
+        [JsonIgnore]
         public Guid Id { get; }
         [Required(ErrorMessage = "First name value is mandatory")]
         [MaxLength(length: 100, ErrorMessage = "Maximum length is 100 characters")]
