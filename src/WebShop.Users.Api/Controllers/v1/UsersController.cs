@@ -119,7 +119,6 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Updates user profile details
         /// </summary>
-        /// <param name="userId">Unique user identifier</param>
         /// <param name="profileUpdateCommand">User profile details</param>
         /// <returns>Empty OK response</returns>
         /// <response code="204">User account profile updated</response>
@@ -133,7 +132,6 @@ namespace WebShop.Users.Api.Controllers.v1
         [AllowAnonymous]
 
         public virtual async Task<IActionResult> UpdateUserInfo(
-            [FromRoute, NotEmptyGuid] Guid userId,
             [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]UpdateUserInfoCommand profileUpdateCommand)
         {
             await this._commandDispather.HandleAsync<UpdateUserInfoCommand>(profileUpdateCommand);
@@ -143,7 +141,6 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Updates user password
         /// </summary>
-        /// <param name="userId">Unique user identifier</param>
         /// <param name="passwordUpdateCommand">User password update details</param>
         /// <returns>Empty OK reponse</returns>
         /// <response code="204">User account password updated</response>
@@ -155,7 +152,6 @@ namespace WebShop.Users.Api.Controllers.v1
         [HttpPut("{userId}/password")]
         [ProducesResponseType(204)]
         public virtual async Task<IActionResult> UpdateUserPassword(
-            [FromRoute, NotEmptyGuid] Guid userId,
             [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]UpdateUserPasswordCommand passwordUpdateCommand)
         {
             await this._commandDispather.HandleAsync<UpdateUserPasswordCommand>(passwordUpdateCommand);
@@ -284,7 +280,9 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <returns>No content 204 status code</returns>
         [HttpPut("{userId}/roles/{roleName}")]
         [ProducesResponseType(typeof(String), 200)]
-        public virtual async Task<IActionResult> AddUserRole([FromRoute, NotEmptyGuid]Guid userId, [FromRoute, Required] String roleName)
+        public virtual async Task<IActionResult> AddUserRole(
+            [FromRoute, NotEmptyGuid]Guid userId, 
+            [FromRoute, Required] String roleName)
         {
             await _commandDispather.HandleAsync<AddUserRoleCommand>(new AddUserRoleCommand(userId, roleName));
             return NoContent();

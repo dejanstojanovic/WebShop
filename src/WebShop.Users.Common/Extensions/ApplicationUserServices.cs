@@ -1,6 +1,4 @@
-﻿using WebShop.Messaging;
-using WebShop.Messaging.Extensions;
-using WebShop.Messaging.ServiceBus;
+﻿using WebShop.Messaging.Extensions;
 using WebShop.Messaging.ServiceBus.Extensions;
 using WebShop.Storage;
 using WebShop.Storage.FileSystem;
@@ -8,7 +6,6 @@ using WebShop.Users.Common.Events;
 using WebShop.Users.Data;
 using WebShop.Users.Data.Entities;
 using WebShop.Users.Data.Extensions;
-using WebShop.Users.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Security.Claims;
 
 namespace WebShop.Users.Common.Extensions
@@ -87,14 +82,14 @@ namespace WebShop.Users.Common.Extensions
             {
                 //Create admin role
                 RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
-                var adminRole = roleManager.FindByNameAsync("Admin").Result;
+                var adminRole = roleManager.FindByNameAsync("admin").Result;
                 if (adminRole == null)
                 {
-                    adminRole = new IdentityRole("Admin");
+                    adminRole = new IdentityRole("admin");
                     roleManager.CreateAsync(adminRole).Wait();
                     roleManager.AddClaimAsync(adminRole, new Claim("permission", "view")).Wait();
                     roleManager.AddClaimAsync(adminRole, new Claim("permission", "create")).Wait();
-                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "update")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "modify")).Wait();
                 }
 
                 //Create default admin user

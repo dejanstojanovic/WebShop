@@ -73,6 +73,19 @@ namespace WebShop.Users.Api
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("UserIdPolicy", policy => policy.RequireClaim("userid"));
+
+                options.AddPolicy("PermissionCreatePolicy", policy =>
+                {
+                    policy.RequireClaim("permission", "create");
+                });
+                options.AddPolicy("PermissionViewPolicy", policy =>
+                {
+                    policy.RequireClaim("permission", "view");
+                });
+                options.AddPolicy("PermissionModifyPolicy", policy =>
+                {
+                    policy.RequireClaim("permission", "update");
+                });
             });
 
             services.ConfigureApplicationCookie(options =>

@@ -9,11 +9,6 @@ namespace WebShop.Users.Common.Queries
     {
         public Guid UserId { get; set; }
 
-        public UserImageGetQuery()
-        {
-
-        }
-
         public UserImageGetQuery(Guid userId)
         {
             this.UserId = userId;
