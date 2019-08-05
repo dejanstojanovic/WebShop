@@ -4,16 +4,24 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WebShop.Messaging;
+using WebShop.Common.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebShop.Users.Common.Commands
 {
     public class RegisterUserCommand : ICommand
     {
         public Guid Id { get; set; }
+        [Required]
         public String FirstName { get; }
+        [Required]
         public String LastName { get; }
+        [Required]
+        [EmailAddress]
         public String Email { get; }
+        [Required]
         public String Password { get; }
+
         public DateTime DateOfBirth { get;  }
         public String Occupation { get; }
         public String Education { get;  }
@@ -21,7 +29,7 @@ namespace WebShop.Users.Common.Commands
         [JsonConstructor]
         public RegisterUserCommand(Guid id, String firstName, String lastName, DateTime dateOfBirth, String occupation, String education,  String email, String password, byte[] image = null)
         {
-            this.Id = id;
+            this.Id = id==Guid.Empty ? Guid.NewGuid(): id;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Email = email;
@@ -32,20 +40,6 @@ namespace WebShop.Users.Common.Commands
             this.Image = image;
         }
 
-        public RegisterUserCommand(UserRegisterDto user, byte[] image=null)
-        {
-            user.Id = user.Id != Guid.Empty ? user.Id : Guid.NewGuid();
-
-            this.Id = user.Id;
-            this.FirstName = user.FirstName;
-            this.LastName = user.LastName;
-            this.Email = user.Email;
-            this.Password = user.Password;
-            this.DateOfBirth = user.DateOfBirth;
-            this.Occupation = user.Occupation;
-            this.Education = user.Education;
-            this.Image = image;
-        }
 
     }
 }

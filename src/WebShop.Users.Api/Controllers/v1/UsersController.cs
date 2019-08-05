@@ -62,7 +62,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Registers new user
         /// </summary>
-        /// <param name="userRegister"></param>
+        /// <param name="registerUserCommand"></param>
         /// <returns>User fetch URL in headers</returns>
         /// <response code="201">User account created</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -73,11 +73,11 @@ namespace WebShop.Users.Api.Controllers.v1
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(Guid), 201)]
-        public virtual async Task<IActionResult> RegisterUser([FromBody]UserRegisterDto userRegister)
+        public virtual async Task<IActionResult> RegisterUser(
+            [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]RegisterUserCommand registerUserCommand)
         {
-            userRegister.Id = userRegister.Id != Guid.Empty ? userRegister.Id : Guid.NewGuid();
-            await this._commandDispather.HandleAsync<RegisterUserCommand>(new RegisterUserCommand(userRegister));
-            return CreatedAtRoute(routeName: "User", routeValues: new { id = userRegister.Id }, value: userRegister.Id);
+            await this._commandDispather.HandleAsync<RegisterUserCommand>(registerUserCommand);
+            return CreatedAtRoute(routeName: "User", routeValues: new { id = registerUserCommand.Id }, value: registerUserCommand.Id);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Query for user profile
         /// </summary>
-        /// <param name="profileBrowse">Query filter values</param>
+        /// <param name="userFilter">Query filter values</param>
         /// <returns>Collection of user profiles</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -111,16 +111,16 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserInfoDetailsViewDto>), 200)]
-        public virtual async Task<IActionResult> FindUsers([FromQuery]UserInfoViewDto profileBrowse)
+        public virtual async Task<IActionResult> FindUsers([FromQuery]UserFilterDto userFilter)
         {
-            return Ok(await this._queryDispather.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(new UserBrowseQuery(profileBrowse)));
+            return Ok(await this._queryDispather.HandleAsync<UserBrowseQuery, IEnumerable<UserInfoDetailsViewDto>>(new UserBrowseQuery(userFilter)));
         }
 
         /// <summary>
         /// Updates user profile details
         /// </summary>
         /// <param name="userId">Unique user identifier</param>
-        /// <param name="profileUpdate">User profile details</param>
+        /// <param name="profileUpdateCommand">User profile details</param>
         /// <returns>Empty OK response</returns>
         /// <response code="204">User account profile updated</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -130,9 +130,13 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{userId}")]
         [ProducesResponseType(204)]
-        public virtual async Task<IActionResult> UpdateUserInfo([FromRoute, NotEmptyGuid] Guid userId,[FromBody]UserInfoUpdateDto profileUpdate)
+        [AllowAnonymous]
+
+        public virtual async Task<IActionResult> UpdateUserInfo(
+            [FromRoute, NotEmptyGuid] Guid userId,
+            [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]UpdateUserInfoCommand profileUpdateCommand)
         {
-            await this._commandDispather.HandleAsync<UpdateUserInfoCommand>(new UpdateUserInfoCommand(userId, profileUpdate));
+            await this._commandDispather.HandleAsync<UpdateUserInfoCommand>(profileUpdateCommand);
             return NoContent();
         }
 
@@ -140,7 +144,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// Updates user password
         /// </summary>
         /// <param name="userId">Unique user identifier</param>
-        /// <param name="passwordUpdate">User password update details</param>
+        /// <param name="passwordUpdateCommand">User password update details</param>
         /// <returns>Empty OK reponse</returns>
         /// <response code="204">User account password updated</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -150,9 +154,11 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{userId}/password")]
         [ProducesResponseType(204)]
-        public virtual async Task<IActionResult> UpdateUserPassword([FromRoute, NotEmptyGuid] Guid userId,[FromBody]UserPasswordUpdateDto passwordUpdate)
+        public virtual async Task<IActionResult> UpdateUserPassword(
+            [FromRoute, NotEmptyGuid] Guid userId,
+            [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]UpdateUserPasswordCommand passwordUpdateCommand)
         {
-            await this._commandDispather.HandleAsync<UpdateUserPasswordCommand>(new UpdateUserPasswordCommand(userId, passwordUpdate));
+            await this._commandDispather.HandleAsync<UpdateUserPasswordCommand>(passwordUpdateCommand);
             return NoContent();
         }
 
@@ -172,7 +178,9 @@ namespace WebShop.Users.Api.Controllers.v1
         [RequestSizeLimit(524288)]
         [ProducesResponseType(201)]
         [SwaggerIgnore]
-        public virtual async Task<IActionResult> SetUserImage([FromRoute, NotEmptyGuid] Guid userId,[FromForm(Name = "photo"), AllowedFileTypes(fileTypes: new String[] { ".jpg", ".jpeg" })]IFormFile file)
+        public virtual async Task<IActionResult> SetUserImage(
+            [FromRoute, NotEmptyGuid] Guid userId,
+            [FromForm(Name = "photo"), AllowedFileTypes(fileTypes: new String[] { ".jpg", ".jpeg" })]IFormFile file)
         {
             using (var memoryStream = new MemoryStream())
             {
@@ -260,7 +268,9 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <returns>No content 204 status code</returns>
         [HttpDelete("{userId}/roles/{roleName}")]
         [ProducesResponseType(typeof(String), 200)]
-        public virtual async Task<IActionResult> RemoveUserRole([FromRoute, NotEmptyGuid]Guid userId, [FromRoute, Required] String roleName)
+        public virtual async Task<IActionResult> RemoveUserRole(
+            [FromRoute, NotEmptyGuid]Guid userId,
+            [FromRoute, Required] String roleName)
         {
             await _commandDispather.HandleAsync<RemoveUserRoleCommand>(new RemoveUserRoleCommand(userId, roleName));
             return NoContent();

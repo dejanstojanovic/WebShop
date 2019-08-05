@@ -1,28 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace WebShop.Users.Common.Dtos.Users
 {
     /// <summary>
-    /// User's profile update DTO
+    /// User's profile view DTO
     /// </summary>
-    public class UserInfoUpdateDto
+    public class UserFilterDto
     {
+        /// <summary>
+        /// Unique user identifier
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <summary>
         /// User's first name
         /// </summary>
-        [Required(ErrorMessage = "First name value is mandatory")]
-        [MaxLength(length:100, ErrorMessage="Maximum length is 100 characters")]
         public String FirstName { get; set; }
 
         /// <summary>
-        /// User's last name
+        /// Users's last name
         /// </summary>
-        [Required(ErrorMessage = "Last name value is mandatory")]
-        [MaxLength(length: 200, ErrorMessage = "Maximum length is 200 characters")]
         public String LastName { get; set; }
+
+        /// <summary>
+        /// User's email address
+        /// </summary>
+        public String Email { get; set; }
 
         /// <summary>
         /// User's date of birth
@@ -32,14 +37,21 @@ namespace WebShop.Users.Common.Dtos.Users
         /// <summary>
         /// User's occupation
         /// </summary>
-        [MaxLength(length: 500, ErrorMessage = "Maximum length is 500 characters")]
         public String Occupation { get; set; }
 
         /// <summary>
         /// User's education
         /// </summary>
-        [MaxLength(length: 500, ErrorMessage = "Maximum length is 500 characters")]
         public String Education { get; set; }
 
+        /// <summary>
+        /// Page index to be returned (starting from 0)
+        /// </summary>
+        public int PageIndex { get; set; }
+
+        /// <summary>
+        /// Number of item s to be returned in a result
+        /// </summary>
+        public int PageSize { get; set; }
     }
 }

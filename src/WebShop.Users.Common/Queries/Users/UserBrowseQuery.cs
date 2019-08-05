@@ -18,15 +18,15 @@ namespace WebShop.Users.Common.Queries
         public String Education { get; set; }
 
 
-        public UserBrowseQuery(UserInfoViewDto profileBrowse)
+        public UserBrowseQuery(UserFilterDto userFilter)
         {
-            this.Email = profileBrowse.Email;
-            this.DateOfBirth = profileBrowse.DateOfBirth;
-            this.Education = profileBrowse.Education;
-            this.FirstName = profileBrowse.FirstName;
-            this.LastName = profileBrowse.LastName;
-            this.PageIndex = profileBrowse.PageIndex;
-            this.PageSize = profileBrowse.PageSize;
+            this.Email = userFilter.Email;
+            this.DateOfBirth = userFilter.DateOfBirth;
+            this.Education = userFilter.Education;
+            this.FirstName = userFilter.FirstName;
+            this.LastName = userFilter.LastName;
+            this.PageIndex = userFilter.PageIndex;
+            this.PageSize = userFilter.PageSize;
         }
 
     }

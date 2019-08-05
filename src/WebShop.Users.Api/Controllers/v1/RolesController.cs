@@ -59,7 +59,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <summary>
         /// Creates new role
         /// </summary>
-        /// <param name="roleCreate"></param>
+        /// <param name="createRoleCommand"></param>
         /// <returns>Role fetch URL in headers</returns>
         /// <response code="201">User account created</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -70,11 +70,10 @@ namespace WebShop.Users.Api.Controllers.v1
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(Guid), 201)]
-        public virtual async Task<IActionResult> RegisterUser([FromBody]RoleAddDto roleCreate)
+        public virtual async Task<IActionResult> CreateRole([FromBody][ModelBinder(BinderType = typeof(RoleCommandModelBinder))]CreateRoleCommand createRoleCommand)
         {
-            roleCreate.Id = roleCreate.Id != Guid.Empty ? roleCreate.Id : Guid.NewGuid();
-            await this._commandDispather.HandleAsync<AddRoleCommand>(new AddRoleCommand(roleCreate.Id, roleCreate.Name));
-            return CreatedAtRoute(routeName: "Role", routeValues: new { id = roleCreate.Id }, value: roleCreate.Id);
+            await this._commandDispather.HandleAsync<CreateRoleCommand>(createRoleCommand);
+            return CreatedAtRoute(routeName: "Role", routeValues: new { id = createRoleCommand.Id }, value: createRoleCommand.Id);
         }
 
         /// <summary>
@@ -117,7 +116,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// Get role by name
         /// </summary>
         /// <param name="roleName">Role name</param>
-        /// <param name="claim">Claim to be assigned to name</param>
+        /// <param name="roleClaimCommand">Claim to be assigned to name</param>
         /// <returns>Role details</returns>
         /// <response code="200">User account details</response>
         /// <response code="401">Not authenticated to perform request</response>
@@ -127,9 +126,10 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{roleName}/claims")]
         [ProducesResponseType(typeof(RoleViewDto), 200)]
-        public virtual async Task<IActionResult> GetRoleClaims([FromRoute, Required]String roleName, RoleClaimAddDto claim)
+        public virtual async Task<IActionResult> GetRoleClaims([FromRoute, Required]String roleName,
+            [ModelBinder(BinderType = typeof(RoleCommandModelBinder))]AddRoleClaimCommand roleClaimCommand)
         {
-            await this._commandDispather.HandleAsync<AddRoleClaimCommand>(new AddRoleClaimCommand(roleName, claim.ClaimType, claim.ClaimValue));
+            await this._commandDispather.HandleAsync<AddRoleClaimCommand>(roleClaimCommand);
             return Ok();
         }
 

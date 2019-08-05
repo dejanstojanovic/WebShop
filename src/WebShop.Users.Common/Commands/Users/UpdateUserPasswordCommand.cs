@@ -4,13 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WebShop.Messaging;
+using WebShop.Common.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebShop.Users.Common.Commands
 {
     public class UpdateUserPasswordCommand: ICommand
     {
+        [NotEmptyGuid]
         public Guid UserId { get; }
+        [Required]
         public String OldPassword { get; }
+        [Required]
         public String NewPassword { get; }
 
         [JsonConstructor]
@@ -21,12 +26,6 @@ namespace WebShop.Users.Common.Commands
             this.NewPassword = newPassword;
         }
 
-        public UpdateUserPasswordCommand(Guid userId,UserPasswordUpdateDto passwordUpdate)
-        {
-            this.UserId = userId;
-            this.OldPassword = passwordUpdate.OldPassword;
-            this.NewPassword = passwordUpdate.NewPassword;
-        }
     }
 }
 

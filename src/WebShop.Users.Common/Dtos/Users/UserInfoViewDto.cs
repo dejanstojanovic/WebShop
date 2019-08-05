@@ -39,14 +39,6 @@ namespace WebShop.Users.Common.Dtos.Users
         /// </summary>
         public String Education { get; set; }
 
-        /// <summary>
-        /// Page index to be returned (starting from 0)
-        /// </summary>
-        public int PageIndex { get; set; }
-
-        /// <summary>
-        /// Number of item s to be returned in a result
-        /// </summary>
-        public int PageSize { get; set; }
+ 
     }
 }

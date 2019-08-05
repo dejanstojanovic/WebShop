@@ -4,14 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WebShop.Messaging;
+using WebShop.Common.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebShop.Users.Common.Commands
 {
     public class UpdateUserInfoCommand:ICommand
     {
+        [NotEmptyGuid]
         public Guid Id { get; }
+        [Required]
         public String FirstName { get;  }
+        [Required]
         public String LastName { get; }
+
         public DateTime DateOfBirth { get; }
         public String Occupation { get; }
         public String Education { get; }
@@ -27,15 +33,5 @@ namespace WebShop.Users.Common.Commands
             this.Education = education;
         }
 
-        public UpdateUserInfoCommand(Guid id,UserInfoUpdateDto profileUpdate)
-        {
-            this.Id = id;
-            this.FirstName = profileUpdate.FirstName;
-            this.LastName = profileUpdate.LastName;
-            this.DateOfBirth = profileUpdate.DateOfBirth;
-            this.Occupation = profileUpdate.Occupation;
-            this.Education = profileUpdate.Education;
-
-        }
     }
 }

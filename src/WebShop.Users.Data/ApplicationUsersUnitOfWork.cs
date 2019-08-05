@@ -17,17 +17,17 @@ namespace WebShop.Users.Data
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserStore<ApplicationUser, IdentityRole, ApplicationDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>> _userStore;
-        private readonly RoleStore<IdentityRole> _roleStore;
+        private readonly RoleStore<IdentityRole, ApplicationDbContext, string, IdentityUserRole<string>, IdentityRoleClaim<string>> _roleStore;
 
-            public ApplicationUsersUnitOfWork(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IUserStore<ApplicationUser> userStore,
-            IRoleStore<IdentityRole> roleStore)
+        public ApplicationUsersUnitOfWork(
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        IUserStore<ApplicationUser> userStore,
+        IRoleStore<IdentityRole> roleStore)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _roleStore = roleStore as RoleStore<IdentityRole>;
+            _roleStore = roleStore as RoleStore<IdentityRole, ApplicationDbContext, string, IdentityUserRole<string>, IdentityRoleClaim<string>>;
             _userStore = userStore as UserStore<ApplicationUser, IdentityRole, ApplicationDbContext, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>;
             _userStore.AutoSaveChanges = false;
             _roleStore.AutoSaveChanges = false;
