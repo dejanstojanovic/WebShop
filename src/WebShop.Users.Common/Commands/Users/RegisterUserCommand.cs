@@ -39,7 +39,10 @@ namespace WebShop.Users.Common.Commands
             this.Education = education;
             this.Image = image;
         }
+        public RegisterUserCommand()
+        {
 
+        }
 
     }
 }

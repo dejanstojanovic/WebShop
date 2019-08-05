@@ -11,7 +11,7 @@ namespace WebShop.Users.Api
     {
         public void Apply(Operation operation, OperationFilterContext context)
         {
-            if (operation.OperationId == "PostImage")
+            if (operation.OperationId == "SetUserImage")
             {
                 operation.Parameters = new List<IParameter>
                 {
@@ -24,19 +24,6 @@ namespace WebShop.Users.Api
                     }
                 };
             }
-
-            //if (operation.OperationId == "GetImage" || 
-            //    operation.OperationId == "Image")
-            //{
-            //    operation.Responses = new Dictionary<String, Response>() {
-            //        { "200",
-            //        new Response() {
-            //            Description="OK",
-            //            Schema = new Schema() { Format = "file" }
-            //            }
-            //        }
-            //    };
-            //}
         }
     }
 }
