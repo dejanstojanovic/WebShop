@@ -27,7 +27,7 @@ namespace WebShop.Users.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment HostingEnvironment { get;  }
+        public IHostingEnvironment HostingEnvironment { get; }
 
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
@@ -39,7 +39,7 @@ namespace WebShop.Users.Api
                     .CreateLogger();
         }
 
-        
+
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
@@ -72,8 +72,16 @@ namespace WebShop.Users.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("UserIdPolicy", policy => policy.RequireClaim("userid"));
+                options.AddPolicy("SameUserPolicy", policy =>
+                {
+                    policy.RequireClaim("userid");
+                    policy.RequireAuthenticatedUser();
+                });
 
+                options.AddPolicy("RoleAdminPolicy", policy =>
+                {
+                    policy.RequireRole("admin");
+                });
                 options.AddPolicy("PermissionCreatePolicy", policy =>
                 {
                     policy.RequireClaim("permission", "create");
@@ -143,4 +151,4 @@ namespace WebShop.Users.Api
             //Do the clean up if required
         }
     }
-    }
+}

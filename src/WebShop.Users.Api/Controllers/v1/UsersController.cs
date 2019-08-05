@@ -23,7 +23,7 @@ namespace WebShop.Users.Api.Controllers.v1
     /// <response code="500">Unrecoverable server error</response>
     /// <response code="401">Not athenticated to perform request</response>
     /// <response code="403">Not authorized to perform request</response>
-    [Authorize("UserIdPolicy")]
+    [Authorize("SameUserPolicy")]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]

@@ -21,7 +21,7 @@ namespace WebShop.Users.Api.Controllers.v1
     /// <response code="500">Unrecoverable server error</response>
     /// <response code="401">Not athenticated to perform request</response>
     /// <response code="403">Not authorized to perform request</response>
-    [Authorize("UserIdPolicy")]
+    [Authorize(Policy ="RoleAdminPolicy")]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -89,7 +89,6 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpGet("{roleName}", Name = "Role")]
         [ProducesResponseType(typeof(RoleViewDto), 200)]
-        [AllowAnonymous]
         public virtual async Task<IActionResult> FindRoleByName([FromRoute] String roleName)
         {
             return Ok(await this._queryDispather.HandleAsync<RoleGetQuery, RoleViewDto>(new RoleGetQuery() { RoleName=roleName}));
