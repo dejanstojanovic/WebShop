@@ -87,9 +87,12 @@ namespace WebShop.Users.Common.Extensions
                 {
                     adminRole = new IdentityRole("admin");
                     roleManager.CreateAsync(adminRole).Wait();
-                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "view")).Wait();
-                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "create")).Wait();
-                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "modify")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "user.view")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "user.create")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "user.modify")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "role.view")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "role.create")).Wait();
+                    roleManager.AddClaimAsync(adminRole, new Claim("permission", "role.modify")).Wait();
                 }
 
                 //Create default admin user
@@ -114,7 +117,7 @@ namespace WebShop.Users.Common.Extensions
                     var task2 = userManager.SetLockoutEnabledAsync(newUser, false).Result;
 
                     //Assign admin role to user
-                    userManager.AddToRoleAsync(newUser, "Admin").Wait();
+                    userManager.AddToRoleAsync(newUser, "admin").Wait();
                     
                 }
             }
