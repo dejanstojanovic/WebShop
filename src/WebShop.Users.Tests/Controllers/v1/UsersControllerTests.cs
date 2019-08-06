@@ -179,7 +179,7 @@ namespace WebShop.Users.Tests.Controllers.v1
                 );
             SetAuthenticationContext(controller);
             //Act
-            var result = await controller.UpdateUserInfo(Guid.NewGuid(),new UpdateUserInfoCommand(
+            var result = await controller.UpdateUserInfo(new UpdateUserInfoCommand(
                 id:Guid.Empty,
                 firstName:String.Empty,
                 lastName:String.Empty,
@@ -207,7 +207,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.UpdateUserInfo(Guid.NewGuid(),new UpdateUserInfoCommand(
+                await controller.UpdateUserInfo(new UpdateUserInfoCommand(
                 id: Guid.Empty,
                 firstName: String.Empty,
                 lastName: String.Empty,
@@ -234,7 +234,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             SetAuthenticationContext(controller);
 
             //Act
-            var result = await controller.UpdateUserPassword(Guid.NewGuid(),new UpdateUserPasswordCommand(
+            var result = await controller.UpdateUserPassword(new UpdateUserPasswordCommand(
                 userId:Guid.Empty,
                 oldPassword:String.Empty,
                 newPassword:String.Empty
@@ -260,7 +260,7 @@ namespace WebShop.Users.Tests.Controllers.v1
             //Act/Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await controller.UpdateUserPassword(Guid.Empty,new UpdateUserPasswordCommand(
+                await controller.UpdateUserPassword(new UpdateUserPasswordCommand(
                 userId: Guid.Empty,
                 oldPassword: String.Empty,
                 newPassword: String.Empty
