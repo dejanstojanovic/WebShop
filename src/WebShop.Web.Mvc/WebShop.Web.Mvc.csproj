@@ -18,4 +18,9 @@
     <PackageReference Include="WebShop.Users.Api.Clients" Version="1.0.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
+  </ItemGroup>
+
 </Project>
