@@ -29,17 +29,23 @@ namespace WebShop.Auth.Api.Services
                 new Claim("userid", user.Id),
                 new Claim("email", user.Email),
             };
+
+            //Add roles and claims
             var roles = await _userManager.GetRolesAsync(user);
-            claims = claims.Concat(roles.Select(r => new Claim("role", r)));
-            foreach (var roleName in roles)
+            if (roles.Any())
             {
-                var role = await _roleManager.FindByNameAsync(roleName);
-                if (role != null)
+                claims = claims.Concat(roles.Select(r => new Claim("role", r)));
+                foreach (var roleName in roles)
                 {
-                    var roleClaims = await _roleManager.GetClaimsAsync(role);
-                    claims = claims.Concat(roleClaims);
+                    var role = await _roleManager.FindByNameAsync(roleName);
+                    if (role != null)
+                    {
+                        var roleClaims = await _roleManager.GetClaimsAsync(role);
+                        claims = claims.Concat(roleClaims);
+                    }
                 }
             }
+
             context.IssuedClaims.AddRange(claims);
         }
 
