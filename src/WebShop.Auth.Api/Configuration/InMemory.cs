@@ -16,7 +16,7 @@ namespace WebShop.Auth.Api.Configuration
             return new[] {
                 new ApiResource("webshop.users.api", "WebShop Users API")
                 {
-                    UserClaims = new [] { "email", "userid" }
+                    UserClaims = new [] { "email", "userid", "role", "permission" }
                 }
             };
         }

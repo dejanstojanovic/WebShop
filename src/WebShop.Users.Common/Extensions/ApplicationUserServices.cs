@@ -117,7 +117,7 @@ namespace WebShop.Users.Common.Extensions
                     var task2 = userManager.SetLockoutEnabledAsync(newUser, false).Result;
 
                     //Assign admin role to user
-                    //userManager.AddToRoleAsync(newUser, "admin").Wait();
+                    userManager.AddToRoleAsync(newUser, "admin").Wait();
                     
                 }
             }

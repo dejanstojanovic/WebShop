@@ -55,19 +55,6 @@ namespace WebShop.Web.Mvc
                   Configuration.Bind("OpenIdConnect", options);
                   options.Scope.Add("webshop.users.api");
                   options.Scope.Add("offline_access");
-
-                  options.Events = new OpenIdConnectEvents
-                  {
-                      OnRemoteFailure = context => {
-                          var ex = context.Failure;
-
-                          context.Response.Redirect("/");
-                          context.HandleResponse();
-
-                          return Task.FromResult(0);
-                      }
-                  };
-
               });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<HttpClient>(provider => {
