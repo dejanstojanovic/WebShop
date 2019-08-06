@@ -26,7 +26,7 @@ namespace WebShop.Users.Api
             }
             var modelType = bindingContext.ModelMetadata.UnderlyingOrModelType;
             var result = JsonConvert.DeserializeObject(valueFromBody, modelType);
-            var idProperty = modelType.GetProperties().FirstOrDefault(p => p.Name.Equals("roleName", StringComparison.InvariantCultureIgnoreCase) || p.Name.Equals("roleName", StringComparison.InvariantCultureIgnoreCase));
+            var idProperty = modelType.GetProperties().FirstOrDefault(p => p.Name.Equals("roleName", StringComparison.InvariantCultureIgnoreCase) || p.Name.Equals("name", StringComparison.InvariantCultureIgnoreCase));
             if (idProperty != null)
             {
                 idProperty.ForceSetValue(result, routeNameValue);

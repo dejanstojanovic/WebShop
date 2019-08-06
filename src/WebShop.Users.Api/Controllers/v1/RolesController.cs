@@ -21,7 +21,7 @@ namespace WebShop.Users.Api.Controllers.v1
     /// <response code="500">Unrecoverable server error</response>
     /// <response code="401">Not athenticated to perform request</response>
     /// <response code="403">Not authorized to perform request</response>
-    [Authorize(Policy ="RoleAdminPolicy")]
+    [Authorize(Policy = SecurityPolicies.RolePolicies.RoleAdminPolicy)]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -91,7 +91,7 @@ namespace WebShop.Users.Api.Controllers.v1
         [ProducesResponseType(typeof(RoleViewDto), 200)]
         public virtual async Task<IActionResult> FindRoleByName([FromRoute] String roleName)
         {
-            return Ok(await this._queryDispather.HandleAsync<RoleGetQuery, RoleViewDto>(new RoleGetQuery() { RoleName=roleName}));
+            return Ok(await this._queryDispather.HandleAsync<RoleGetQuery, RoleViewDto>(new RoleGetQuery() { RoleName = roleName }));
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace WebShop.Users.Api.Controllers.v1
         public virtual async Task<IActionResult> GetRoleClaims(
             [FromRoute, Required]String roleName)
         {
-            return Ok(await this._queryDispather.HandleAsync<RoleGetClaimsQuery, IEnumerable<RoleClaimViewDto>>(new RoleGetClaimsQuery() { RoleName=roleName}));
+            return Ok(await this._queryDispather.HandleAsync<RoleGetClaimsQuery, IEnumerable<RoleClaimViewDto>>(new RoleGetClaimsQuery() { RoleName = roleName }));
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace WebShop.Users.Api.Controllers.v1
         [HttpDelete("{roleName}/claims")]
         [ProducesResponseType(204)]
         public virtual async Task<IActionResult> AddRoleClaim(
-            [FromBody,ModelBinder(BinderType = typeof(RoleCommandModelBinder))]RemoveRoleClaimCommand removeRoleClaimCommand)
+            [FromBody, ModelBinder(BinderType = typeof(RoleCommandModelBinder))]RemoveRoleClaimCommand removeRoleClaimCommand)
         {
             await this._commandDispather.HandleAsync<RemoveRoleClaimCommand>(removeRoleClaimCommand);
             return NoContent();

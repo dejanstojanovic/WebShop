@@ -72,28 +72,42 @@ namespace WebShop.Users.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("SameUserPolicy", policy =>
+                options.AddPolicy(SecurityPolicies.UserPolicies.SameUserPolicy, policy =>
                 {
-                    policy.RequireClaim("userid");
                     policy.RequireAuthenticatedUser();
+                    //TODO: Add logic to check route userid param
                 });
 
-                options.AddPolicy("RoleAdminPolicy", policy =>
+
+                #region User authorization policies
+                options.AddPolicy(SecurityPolicies.UserPolicies.UserCreatePolicy, policy =>
                 {
-                    policy.RequireRole("admin");
+                    policy.RequireClaim("permission", "user.create");
                 });
-                options.AddPolicy("PermissionCreatePolicy", policy =>
+                options.AddPolicy(SecurityPolicies.UserPolicies.UserModifyPolicy, policy =>
                 {
-                    policy.RequireClaim("permission", "create");
+                    policy.RequireClaim("permission", "user.modify");
                 });
-                options.AddPolicy("PermissionViewPolicy", policy =>
+                options.AddPolicy(SecurityPolicies.UserPolicies.UserViewPolicy, policy =>
                 {
-                    policy.RequireClaim("permission", "view");
+                    policy.RequireClaim("permission", "user.view");
                 });
-                options.AddPolicy("PermissionModifyPolicy", policy =>
+                #endregion
+
+                #region Role authorize policies
+                options.AddPolicy(SecurityPolicies.RolePolicies.RoleCreatePolicy, policy =>
                 {
-                    policy.RequireClaim("permission", "update");
+                    policy.RequireClaim("permission", "role.create");
                 });
+                options.AddPolicy(SecurityPolicies.RolePolicies.RoleModifyPolicy, policy =>
+                {
+                    policy.RequireClaim("permission", "role.modify");
+                });
+                options.AddPolicy(SecurityPolicies.RolePolicies.RoleViewPolicy, policy =>
+                {
+                    policy.RequireClaim("permission", "role.view");
+                });
+                #endregion
             });
 
             services.ConfigureApplicationCookie(options =>
