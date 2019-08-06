@@ -92,6 +92,10 @@ namespace WebShop.Users.Api
                 {
                     policy.RequireClaim("permission", "user.view");
                 });
+                options.AddPolicy(SecurityPolicies.UserPolicies.UserAdminPolicy, policy =>
+                {
+                    policy.RequireRole("admin");
+                });
                 #endregion
 
                 #region Role authorize policies

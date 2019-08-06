@@ -14,7 +14,7 @@ namespace WebShop.Auth.Api.Configuration
         public static IEnumerable<ApiResource> ApiResources()
         {
             return new[] {
-                new ApiResource("WebShop.users.api", "WebShop Users API")
+                new ApiResource("webshop.users.api", "WebShop Users API")
                 {
                     UserClaims = new [] { "email", "userid" }
                 }
@@ -33,18 +33,18 @@ namespace WebShop.Auth.Api.Configuration
             return new[] {
                 new Client
                 {
-                    ClientId = "WebShop.app",
+                    ClientId = "webshop.app",
                     ClientName="WebShop Backend Application",
                     Description="Secure client using ResourceOwnerPassword flow",
                     ClientSecrets = new [] { new Secret("5aKtv2wvyP".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     AllowedScopes = new [] {
-                        "WebShop.users.api"
+                        "webshop.users.api"
                     }
                 },
                 new Client
                 {
-                    ClientId = "WebShop.js",
+                    ClientId = "webshop.js",
                     ClientName="WebShop JavaScrip Web Application",
                     Description="Unsecure static content client",
                     ClientSecrets = new [] { new Secret("5aKtv2wvyP".Sha256()) },
@@ -52,7 +52,7 @@ namespace WebShop.Auth.Api.Configuration
                     AllowedScopes = new [] {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "WebShop.users.api"
+                        "webshop.users.api"
                     },
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris = new [] { "https://localhost:5004/signin-oidc" },
@@ -60,7 +60,7 @@ namespace WebShop.Auth.Api.Configuration
                 },
                 new Client
                 {
-                    ClientId = "WebShop.web",
+                    ClientId = "webshop.web",
                     ClientName="WebShop Web Application",
                     Description="Web application client with back-channel",
                     ClientSecrets = new [] { new Secret("5aKtv2wvyP".Sha256()) },
@@ -69,7 +69,7 @@ namespace WebShop.Auth.Api.Configuration
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "WebShop.users.api"
+                        "webshop.users.api"
                     },
                     AccessTokenLifetime = (int)TimeSpan.FromHours(1).TotalSeconds,
                     AuthorizationCodeLifetime = (int)TimeSpan.FromMinutes(5).TotalSeconds,
