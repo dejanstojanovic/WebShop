@@ -1,25 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebShop.Users.Api.Extensions;
 using WebShop.Users.Common.Extensions;
-using WebShop.Users.Data.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using WebShop.Common.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using Serilog;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebShop.Users.Api
 {
@@ -49,7 +41,7 @@ namespace WebShop.Users.Api
         {
             services.AddApiServices();
             services.AddApplicationUserServices();
-
+            services.AddHttpContextAccessor();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,12 +62,12 @@ namespace WebShop.Users.Api
                 options.RequireHttpsMetadata = false;
             });
 
+            #region Authorization rules
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("SameUser", policy =>
+                options.AddPolicy("SameUserOrAdmin", policy =>
                 {
-                    policy.RequireAuthenticatedUser();
-                    //TODO: Add logic to check route userid param
+                    policy.AddRequirements(new SameUserAuthReqirement());
                 });
                 options.AddPolicy("RoleAdmin", policy =>
                 {
@@ -85,8 +77,11 @@ namespace WebShop.Users.Api
                 {
                     policy.RequireClaim("permission", new[] { "user.add", "user.modify", "user.view" });
                 });
-
             });
+
+            services.AddSingleton<IAuthorizationHandler, SameUserAuthHandler>();
+
+            #endregion
 
             services.ConfigureApplicationCookie(options =>
             {
