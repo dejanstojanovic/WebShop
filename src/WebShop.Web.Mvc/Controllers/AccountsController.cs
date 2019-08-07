@@ -20,7 +20,16 @@ namespace WebShop.Web.Mvc.Controllers
         public async Task<IActionResult> Index([FromQuery]UserFilterViewModel filter)
         {
             var apiClient = new UsersClient(Configuration.GetValue<String>("UsersApi"), GetHttpClient());
-            //apiClient.FindUsersAsync
+            var users = await apiClient.FindUsersAsync(
+                firstName: "Dejan", 
+                lastName:"", 
+                email:"",
+                pageIndex:0,
+                pageSize:10,
+                occupation:"", 
+                education:"",
+                dateOfBirth:null
+                );
             return View("Index");
         }
 

@@ -69,6 +69,10 @@ namespace WebShop.Users.Api
                 {
                     policy.AddRequirements(new SameUserAuthReqirement());
                 });
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireRole("admin");
+                });
                 options.AddPolicy("RoleAdmin", policy =>
                 {
                     policy.RequireClaim("permission", new[] { "role.add", "role.modify", "role.view" });

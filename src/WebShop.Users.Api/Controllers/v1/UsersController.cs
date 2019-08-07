@@ -23,7 +23,7 @@ namespace WebShop.Users.Api.Controllers.v1
     /// <response code="500">Unrecoverable server error</response>
     /// <response code="401">Not athenticated to perform request</response>
     /// <response code="403">Not authorized to perform request</response>
-    [Authorize(Policy = "SameUserOrAdmin")]
+    [Authorize]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -129,7 +129,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{userId}")]
         [ProducesResponseType(204)]
-        [AllowAnonymous]
+        [Authorize(Policy = "SameUserOrAdmin")]
 
         public virtual async Task<IActionResult> UpdateUserInfo(
             [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]UpdateUserInfoCommand profileUpdateCommand)
@@ -151,6 +151,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [HttpPut("{userId}/password")]
         [ProducesResponseType(204)]
+        [Authorize(Policy = "SameUserOrAdmin")]
         public virtual async Task<IActionResult> UpdateUserPassword(
             [FromBody][ModelBinder(BinderType = typeof(UserCommandModelBinder))]UpdateUserPasswordCommand passwordUpdateCommand)
         {
@@ -174,6 +175,7 @@ namespace WebShop.Users.Api.Controllers.v1
         [RequestSizeLimit(524288)]
         [ProducesResponseType(201)]
         [SwaggerIgnore]
+        [Authorize(Policy = "SameUserOrAdmin")]
         public virtual async Task<IActionResult> SetUserImage(
             [FromRoute, NotEmptyGuid] Guid userId,
             [FromForm(Name = "photo"), AllowedFileTypes(fileTypes: new String[] { ".jpg", ".jpeg" })]IFormFile file)
@@ -218,6 +220,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <response code="500">Unrecoverable server error</response>
         [ProducesResponseType(204)]
         [HttpDelete("{userId}/image")]
+        [Authorize(Policy = "SameUserOrAdmin")]
         public virtual async Task<IActionResult> DeleteUserImage([FromRoute, NotEmptyGuid] Guid userId)
         {
             await _commandDispather.HandleAsync<RemoveUserImageCommand>(new RemoveUserImageCommand(userId));
@@ -250,6 +253,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <returns>List of role names user belongs to</returns>
         [HttpGet("{userId}/roles", Name = "Roles")]
         [ProducesResponseType(typeof(String), 200)]
+        [Authorize(Policy = "SameUserOrAdmin")]
         public virtual async Task<IActionResult> GetUserRoles([FromRoute, NotEmptyGuid]Guid userId)
         {
             var data = await _queryDispather.HandleAsync<UserRolesGetQuery, IEnumerable<String>>(new UserRolesGetQuery() { UserId = userId });
@@ -264,6 +268,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <returns>No content 204 status code</returns>
         [HttpDelete("{userId}/roles/{roleName}")]
         [ProducesResponseType(typeof(String), 200)]
+        [Authorize(Policy = "Admin")]
         public virtual async Task<IActionResult> RemoveUserRole(
             [FromRoute, NotEmptyGuid]Guid userId,
             [FromRoute, Required] String roleName)
@@ -280,6 +285,7 @@ namespace WebShop.Users.Api.Controllers.v1
         /// <returns>No content 204 status code</returns>
         [HttpPut("{userId}/roles/{roleName}")]
         [ProducesResponseType(typeof(String), 200)]
+        [Authorize(Policy = "Admin")]
         public virtual async Task<IActionResult> AddUserRole(
             [FromRoute, NotEmptyGuid]Guid userId, 
             [FromRoute, Required] String roleName)
