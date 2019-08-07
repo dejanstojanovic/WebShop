@@ -8,10 +8,5 @@ namespace WebShop.Users.Api
 {
     public class SameUserAuthReqirement: IAuthorizationRequirement
     {
-        //public Guid UserId { get; }
-        //public SameUserAuthReqirement(Guid userId)
-        //{
-        //    UserId = userId;
-        //}
     }
 }

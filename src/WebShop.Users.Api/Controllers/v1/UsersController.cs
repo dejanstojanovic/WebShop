@@ -14,6 +14,7 @@ using NSwag.Annotations;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace WebShop.Users.Api.Controllers.v1
 {
@@ -23,6 +24,8 @@ namespace WebShop.Users.Api.Controllers.v1
     /// <response code="500">Unrecoverable server error</response>
     /// <response code="401">Not athenticated to perform request</response>
     /// <response code="403">Not authorized to perform request</response>
+    //[Authorize(Policy ="AnyUser")]
+    //[Authorize(Policy = "SameUserOrAdmin")]
     [Authorize]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]

@@ -19,8 +19,10 @@ namespace WebShop.Users.Api
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SameUserAuthReqirement requirement)
         {
-
-            var isSameUser = Guid.TryParse(context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)?.Value, out var claimUserId) &&
+            var isSameUser = Guid.TryParse(
+                context.User.Claims.FirstOrDefault(c => c.Type.Equals("userid", StringComparison.InvariantCultureIgnoreCase))?.Value ??
+                context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value
+                , out var claimUserId) &&
                 Guid.TryParse(_httpContextAccessor.HttpContext.GetRouteValue("userId") as String, out var routeUserId) &&
                 claimUserId != Guid.Empty & claimUserId == routeUserId;
 

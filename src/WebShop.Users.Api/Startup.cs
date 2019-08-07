@@ -65,8 +65,13 @@ namespace WebShop.Users.Api
             #region Authorization rules
             services.AddAuthorization(options =>
             {
+                options.AddPolicy("AnyUser", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                });
                 options.AddPolicy("SameUserOrAdmin", policy =>
                 {
+                    policy.RequireAuthenticatedUser();
                     policy.AddRequirements(new SameUserAuthReqirement());
                 });
                 options.AddPolicy("Admin", policy =>

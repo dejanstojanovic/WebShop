@@ -23,13 +23,29 @@ namespace WebShop.Web.Mvc.Controllers
             var users = await apiClient.FindUsersAsync(
                 firstName: "Dejan", 
                 lastName:"", 
-                email:"",
+                email:"d.stojanovic@hotmail.com",
                 pageIndex:0,
                 pageSize:10,
                 occupation:"", 
                 education:"",
                 dateOfBirth:null
                 );
+
+            var user = users?.FirstOrDefault();
+            if (user != null)
+            {
+                await apiClient.UpdateUserInfoAsync(
+                    new UpdateUserInfoCommand()
+                    {
+                        DateOfBirth = user.DateOfBirth,
+                        Education=user.Education,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Occupation = "IT master - level 1"
+                    }
+                    , user.Id.ToString());
+            }
+
             return View("Index");
         }
 
