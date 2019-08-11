@@ -22,20 +22,9 @@ namespace WebShop.Messaging.ServiceBus
              ILogger<MessagePublisher<TMessage>> logger):base(configuration)
         {           
             _logger = logger;
-
-            //if (!String.IsNullOrWhiteSpace(TopicName))
-            //{
-            //    _senderClient = new TopicClient(
-            //       _configuration.GetConnectionString("ServiceBus"),
-            //       TopicName);
-            //}
-            //else
-            //{
                 _senderClient = new QueueClient(
                     _configuration.GetConnectionString("ServiceBus"),
                     !String.IsNullOrWhiteSpace(QueueName) ? QueueName : typeof(TMessage).Name.ToLowerInvariant());
-            //}
-            
         }
 
         public void Dispose()
@@ -43,12 +32,13 @@ namespace WebShop.Messaging.ServiceBus
             
         }
 
-        public async Task Publish(TMessage message)
+        public async Task Publish(TMessage message, Guid correlationId)
         {
-            await _senderClient.SendAsync(
-                new Message(
+            var busMessage = new Message(
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message))
-                    )
+                    );
+            await _senderClient.SendAsync(
+                busMessage
                 );
         }
     }

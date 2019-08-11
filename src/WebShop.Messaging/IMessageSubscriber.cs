@@ -8,6 +8,6 @@ namespace WebShop.Messaging
 {
     public interface IMessageSubscriber<TMessage>:IDisposable where TMessage : IMessage
     {
-        Task HandleAsync(TMessage message);
+        Task HandleAsync(TMessage message, Guid correlationId);
     }
 }

@@ -41,9 +41,10 @@ namespace WebShop.Messaging.ServiceBus
 
         async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
+
             try
             {
-                await this.HandleAsync(JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body)));
+                await this.HandleAsync(JsonConvert.DeserializeObject<TMessage>(Encoding.UTF8.GetString(message.Body)), Guid.Parse(message.CorrelationId));
             }
             catch(Exception ex)
             {
@@ -61,7 +62,7 @@ namespace WebShop.Messaging.ServiceBus
         }
         
 
-        public async Task HandleAsync(TMessage message)
+        public async Task HandleAsync(TMessage message, Guid correlationId)
         {
             using (var handler = _serviceProvider.GetService(typeof(IMessageHandler<TMessage>)) as IMessageHandler<TMessage>)
             {

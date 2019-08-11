@@ -8,6 +8,6 @@ namespace WebShop.Messaging
 {
     public interface IMessagePublisher<TMessage>:IDisposable where TMessage :IMessage
     {
-        Task Publish(TMessage message);
+        Task Publish(TMessage message, Guid correlationId);
     }
 }
