@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebShop.Users.Api
+namespace WebShop.Common.Swagger
 {
     public class SwaggerFileOperationFilter : IOperationFilter
     {

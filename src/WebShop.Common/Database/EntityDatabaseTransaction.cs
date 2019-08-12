@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebShop.Users.Data
+namespace WebShop.Common.Database
 {
     /// <summary>
     /// Database transaction conrete implementation
     /// </summary>
-    class EntityDatabaseTransaction : IDatabaseTransaction
+    public class EntityDatabaseTransaction : IDatabaseTransaction
     {
         private IDbContextTransaction transaction;
 

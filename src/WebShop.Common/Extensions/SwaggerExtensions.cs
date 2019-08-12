@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
-using Sample.Api;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WebShop.Common.Swagger;
 
-namespace WebShop.Users.Api.Extensions
+namespace WebShop.Common.Extensions
 {
     /// <summary>
     /// Swagger startup configuration
@@ -55,19 +55,19 @@ namespace WebShop.Users.Api.Extensions
                 {
                     // Resolve the temprary IApiVersionDescriptionProvider service
                     var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-                    String assemblyDescription = typeof(Startup).Assembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
+                    var apiExecAssembly = Assembly.GetEntryAssembly();
+                    String assemblyDescription = apiExecAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
 
                     // Add a swagger document for each discovered API version
                     foreach (var description in provider.ApiVersionDescriptions)
                     {
                         options.SwaggerDoc(description.GroupName, new Swashbuckle.AspNetCore.Swagger.Info()
                         {
-                            Title = $"{typeof(Startup).Assembly.GetCustomAttribute<AssemblyProductAttribute>().Product} {description.ApiVersion}",
+                            Title = $"{apiExecAssembly.GetCustomAttribute<AssemblyProductAttribute>().Product} {description.ApiVersion}",
                             Version = description.ApiVersion.ToString(),
                             Description = description.IsDeprecated ? $"{assemblyDescription} - DEPRECATED" : $"{assemblyDescription}" +
-                            $"<p><img src='/swagger-ui/healthcheck-30x30.png' valign='middle'/><a href='/health' target='_blank'>Healthchecks</a></p>" +
-                            $"<p><img src='/swagger-ui/rocket-30x30.png' valign='middle'/>Build #{typeof(Startup).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}</p>"
+                            $"<p><a href='/health' target='_blank'>Healthchecks</a></p>" +
+                            $"<p>Build #{apiExecAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}</p>"
                         });
                     }
 

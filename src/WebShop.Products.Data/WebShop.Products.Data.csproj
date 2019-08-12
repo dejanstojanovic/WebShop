@@ -1,12 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ProjectGuid>{738f4f51-17ed-416d-ae6f-76c8e9f85e9b}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entites\" />
-    <Folder Include="Repositories\" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
   </ItemGroup>
 
 </Project>

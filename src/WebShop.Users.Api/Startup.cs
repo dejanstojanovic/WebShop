@@ -12,6 +12,7 @@ using Serilog;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
+using WebShop.Common.Extensions;
 
 namespace WebShop.Users.Api
 {

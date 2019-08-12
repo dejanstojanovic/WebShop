@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebShop.Users.Data
+namespace WebShop.Common.Database
 {
     /// <summary>
     /// Database transaction interface

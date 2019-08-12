@@ -6,6 +6,7 @@ using WebShop.Users.Data.Entities;
 using WebShop.Users.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using WebShop.Common.Database;
 
 namespace WebShop.Users.Data
 {

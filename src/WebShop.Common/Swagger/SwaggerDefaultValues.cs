@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebShop.Users.Api
+namespace WebShop.Common.Swagger
 {
     /// <summary>
     /// Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.

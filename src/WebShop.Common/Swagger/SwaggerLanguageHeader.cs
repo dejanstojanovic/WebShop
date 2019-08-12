@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Sample.Api
+namespace WebShop.Common.Swagger
 {
     public class SwaggerLanguageHeader : IOperationFilter
     {

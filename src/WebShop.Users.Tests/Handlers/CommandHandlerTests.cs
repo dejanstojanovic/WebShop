@@ -36,7 +36,7 @@ namespace WebShop.Users.Tests.Handlers
             Mock<IMapper> mapper = new Mock<IMapper>();
             mapper.Setup(m => m.Map<UserRegisteredEvent>(It.IsAny<Object>())).Returns(new UserRegisteredEvent(Guid.NewGuid(), String.Empty, String.Empty, String.Empty));
             Mock<IMessagePublisher<UserRegisteredEvent>> messagePublisher = new Mock<IMessagePublisher<UserRegisteredEvent>>();
-            messagePublisher.Setup(p => p.Publish(It.IsAny<UserRegisteredEvent>())).Returns(Task.CompletedTask);
+            messagePublisher.Setup(p => p.Publish(It.IsAny<UserRegisteredEvent>(), It.IsAny<Guid>())).Returns(Task.CompletedTask);
 
             var handler = new UserRegisterHandler(
                 unitOfWork.Object,
@@ -46,20 +46,20 @@ namespace WebShop.Users.Tests.Handlers
                 logger.Object);
 
             //Act
-             await handler.HandleAsync(new RegisterUserCommand(
-                 id:Guid.NewGuid(),
-                 firstName:String.Empty,
-                 lastName: String.Empty,
-                 password: String.Empty,
-                 email: String.Empty,
-                 education: String.Empty,
-                 occupation: String.Empty,
-                 dateOfBirth:DateTime.Now,
-                 image:null
-                 ));
+            await handler.HandleAsync(new RegisterUserCommand(
+                id: Guid.NewGuid(),
+                firstName: String.Empty,
+                lastName: String.Empty,
+                password: String.Empty,
+                email: String.Empty,
+                education: String.Empty,
+                occupation: String.Empty,
+                dateOfBirth: DateTime.Now,
+                image: null
+                ));
 
             //Assert
-            
+
         }
 
         [Fact]
@@ -75,9 +75,9 @@ namespace WebShop.Users.Tests.Handlers
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
 
             Mock<IMapper> mapper = new Mock<IMapper>();
-            mapper.Setup(m => m.Map<UserRegisteredEvent>(It.IsAny<Object>())).Returns(new UserRegisteredEvent(Guid.NewGuid(),String.Empty,String.Empty,String.Empty));
+            mapper.Setup(m => m.Map<UserRegisteredEvent>(It.IsAny<Object>())).Returns(new UserRegisteredEvent(Guid.NewGuid(), String.Empty, String.Empty, String.Empty));
             Mock<IMessagePublisher<UserRegisteredEvent>> messagePublisher = new Mock<IMessagePublisher<UserRegisteredEvent>>();
-            messagePublisher.Setup(p => p.Publish(It.IsAny<UserRegisteredEvent>())).Returns(Task.CompletedTask);
+            messagePublisher.Setup(p => p.Publish(It.IsAny<UserRegisteredEvent>(),It.IsAny<Guid>())).Returns(Task.CompletedTask);
 
 
             var handler = new UserRegisterHandler(
@@ -111,15 +111,15 @@ namespace WebShop.Users.Tests.Handlers
             //Arrange
             Mock<IApplicationUsersRepository> applicationRepository = new Mock<IApplicationUsersRepository>();
             Mock<IApplicationUsersUnitOfWork> unitOfWork = new Mock<IApplicationUsersUnitOfWork>();
-            applicationRepository.Setup(r => r.UpdateProfile(It.IsAny<Guid>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>(),It.IsAny<String>())).Returns(Task.CompletedTask);
+            applicationRepository.Setup(r => r.UpdateProfile(It.IsAny<Guid>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>())).Returns(Task.CompletedTask);
             unitOfWork.Setup(u => u.ApplicationUsers).Returns(applicationRepository.Object);
 
             var handler = new UserInfoUpdateHandler(unitOfWork.Object);
 
             //Act
             await handler.HandleAsync(new UpdateUserInfoCommand(
-                id:Guid.NewGuid(),
-                firstName:String.Empty,
+                id: Guid.NewGuid(),
+                firstName: String.Empty,
                 lastName: String.Empty,
                 education: String.Empty,
                 occupation: String.Empty,

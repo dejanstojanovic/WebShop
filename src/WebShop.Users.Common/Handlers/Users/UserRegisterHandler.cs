@@ -65,7 +65,7 @@ namespace WebShop.Users.Common.Handlers
             //Save to DB
             await _applicationUsersUnitOfWork.SaveAsync();
 
-            await _messagePublisher.Publish(_mapper.Map<UserRegisteredEvent>(command));
+            await _messagePublisher.Publish(_mapper.Map<UserRegisteredEvent>(command), Guid.NewGuid());
         }
 
         public void Dispose() { }
