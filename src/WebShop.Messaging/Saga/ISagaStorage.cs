@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace WebShop.Messaging.Saga
 {
-    public interface ISagaStorage
+    public interface ISagaStorage<TState> where TState:ISagaState
     {
-        Task<ISagaState> GetStateAsync(Guid sagaId);
-        Task SetStateAsync(Guid sagaId, ISagaState state);
+        Task<TState> GetStateAsync(Guid sagaId);
+        Task SetStateAsync(Guid sagaId, TState state);
     }
 }

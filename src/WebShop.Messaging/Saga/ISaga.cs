@@ -1,9 +1,13 @@
 using System;
+using System.Threading.Tasks;
 
 namespace WebShop.Messaging.Saga
 {
-    public interface ISaga
+    public interface ISaga<TState> where TState:ISagaState
     {
-      Guid Id { get;} 
-    } 
+        Guid Id { get; }
+        Task StartAsync();
+        Task CompensateAsync();
+        Task FinishAsync();
+    }
 }
