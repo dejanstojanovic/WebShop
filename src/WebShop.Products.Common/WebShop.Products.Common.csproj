@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Dtos\" />
     <Folder Include="Events\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
