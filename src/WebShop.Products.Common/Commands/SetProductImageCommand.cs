@@ -5,7 +5,7 @@ using WebShop.Messaging;
 
 namespace WebShop.Products.Common.Commands
 {
-    public class CreateProductCommand:ICommand
+    public class SetProductImageCommand:ICommand
     {
     }
 }

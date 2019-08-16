@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebShop.Products.Common.Dtos
 {
-    class ProductDetailsViewDto
+    public class ProductDetailsViewDto
     {
     }
 }

@@ -14,4 +14,9 @@
     <ProjectReference Include="..\WebShop.Messaging\WebShop.Messaging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Messages\" />
+    <Folder Include="Sagas\" />
+  </ItemGroup>
+
 </Project>

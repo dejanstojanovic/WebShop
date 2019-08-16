@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebShop.Messaging;
 
 namespace WebShop.Products.Common.Commands
 {
-    class UpdateProductCommand
+    public class UpdateProductCommand:ICommand
     {
     }
 }

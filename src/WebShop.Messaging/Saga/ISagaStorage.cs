@@ -7,5 +7,6 @@ namespace WebShop.Messaging.Saga
     {
         Task<TState> GetStateAsync(Guid sagaId);
         Task SetStateAsync(Guid sagaId, TState state);
+        Task DeleteAsync(Guid sagaId);
     }
 }

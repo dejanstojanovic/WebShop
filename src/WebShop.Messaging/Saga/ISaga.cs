@@ -6,8 +6,6 @@ namespace WebShop.Messaging.Saga
     public interface ISaga<TState> where TState:ISagaState
     {
         Guid Id { get; }
-        Task StartAsync();
-        Task CompensateAsync();
-        Task FinishAsync();
+        Task CompleteAsync();
     }
 }

@@ -9,4 +9,8 @@
     <Folder Include="Extensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop.Messaging\WebShop.Messaging.csproj" />
+  </ItemGroup>
+
 </Project>
