@@ -22,7 +22,6 @@ namespace WebShop.Common.Exceptions
         {
         }
 
-        // Without this constructor, deserialization will fail
         protected DuplicateException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

@@ -31,7 +31,7 @@ namespace WebShop.Products.Data
         {
             //Concurrency check field
             builder.Entity<Product>()
-            .Property(p => p.Timestamp)
+            .Property(p => p.RowVersion)
             .IsRowVersion();
 
             //Apply configuration

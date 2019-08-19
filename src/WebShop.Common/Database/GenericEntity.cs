@@ -14,6 +14,6 @@ namespace WebShop.Common.Database
 
         [ConcurrencyCheck]
         [Timestamp]
-        public byte[] Timestamp { get; set; }
+        public byte[] RowVersion { get; set; }
     }
 }

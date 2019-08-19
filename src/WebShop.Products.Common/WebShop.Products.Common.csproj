@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Events\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>

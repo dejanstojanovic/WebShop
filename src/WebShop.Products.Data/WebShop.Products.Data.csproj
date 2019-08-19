@@ -25,4 +25,8 @@
     <ProjectReference Include="..\WebShop.Common\WebShop.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

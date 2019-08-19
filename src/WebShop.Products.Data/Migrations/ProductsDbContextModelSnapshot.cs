@@ -32,7 +32,7 @@ namespace WebShop.Products.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<byte[]>("Timestamp")
+                    b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
