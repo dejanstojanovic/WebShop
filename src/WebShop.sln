@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShop.Coordinator.Api", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{132B0D8C-D247-4C7A-9CE7-A0A48DDFEB98}"
 	ProjectSection(SolutionItems) = preProject
-		consul-docker.sh = consul-docker.sh
+		docker-run.sh = docker-run.sh
 	EndProjectSection
 EndProject
 Global
