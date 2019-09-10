@@ -74,6 +74,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{132B
 		docker-run.sh = docker-run.sh
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShop.Products.Tests", "WebShop.Products.Tests\WebShop.Products.Tests.csproj", "{DEF3EFA6-5133-421F-B718-DE4EBB2C3676}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,10 @@ Global
 		{AC829639-39BF-493C-952C-5B74925E74CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC829639-39BF-493C-952C-5B74925E74CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC829639-39BF-493C-952C-5B74925E74CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEF3EFA6-5133-421F-B718-DE4EBB2C3676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEF3EFA6-5133-421F-B718-DE4EBB2C3676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEF3EFA6-5133-421F-B718-DE4EBB2C3676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEF3EFA6-5133-421F-B718-DE4EBB2C3676}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +204,7 @@ Global
 		{4416EE81-76B6-48A9-A019-CF5C991F7E80} = {E6E2544F-7E5C-4207-B838-7A121E646D11}
 		{A5616E7F-5CAB-4AD1-9490-EC5D232CD89F} = {AA09DE0F-7CE8-46FF-9264-B653DB3E7A8D}
 		{AC829639-39BF-493C-952C-5B74925E74CC} = {A5616E7F-5CAB-4AD1-9490-EC5D232CD89F}
+		{DEF3EFA6-5133-421F-B718-DE4EBB2C3676} = {E6E2544F-7E5C-4207-B838-7A121E646D11}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A413711-7E8E-49BC-B65F-9E5BA5CF5689}
