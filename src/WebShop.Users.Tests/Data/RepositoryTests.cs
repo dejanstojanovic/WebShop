@@ -25,26 +25,33 @@ namespace WebShop.Users.Tests.Data
         [Fact]
         public async Task GetUser()
         {
-            var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b4");
+            try
+            {
+                var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b4");
 
-            var dbContextMock = GetDbContextMock<ApplicationUser>(GetMockData());
-            var userManagerMock = GetUserManagerMock();
+                var dbContextMock = GetDbContextMock<ApplicationUser>(GetMockData()).Object;
+                var userManagerMock = GetUserManagerMock();
 
-            userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(
-                Task.FromResult(GetMockData().SingleOrDefault(e => e.Id.Equals(userId.ToString())))
-                );
+                userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(
+                    Task.FromResult(GetMockData().SingleOrDefault(e => e.Id.Equals(userId.ToString())))
+                    );
 
-            var roleManagerMock = GetRoleManagerMock();
+                var roleManagerMock = GetRoleManagerMock().Object;
 
-            ApplicationUsersRepository applicationUsersRepository = new ApplicationUsersRepository(
-                dbContextMock.Object, 
-                userManagerMock.Object, 
-                roleManagerMock.Object
-                );
-            var user = applicationUsersRepository.GetUser(userId);
-            Assert.NotNull(user);
-            Assert.IsAssignableFrom<ApplicationUser>(user);
+                ApplicationUsersRepository applicationUsersRepository = new ApplicationUsersRepository(
+                    dbContextMock,
+                    userManagerMock.Object,
+                    roleManagerMock
+                    );
+                var user = applicationUsersRepository.GetUser(userId);
+                Assert.NotNull(user);
+                Assert.IsAssignableFrom<ApplicationUser>(user);
 
+            }
+            catch(Exception ex)
+            {
+                //Breakpoint here
+            }
             await Task.CompletedTask;
         }
 
