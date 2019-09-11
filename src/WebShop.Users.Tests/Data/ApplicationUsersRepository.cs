@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebShop.Common.Exceptions;
-using WebShop.Common.Extensions;
+
 
 namespace WebShop.Users.Tests.Data
 {
@@ -27,15 +27,12 @@ namespace WebShop.Users.Tests.Data
         [Fact]
         public async Task GetUser_ReturnsUser()
         {
-            var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b4");
-            var data = GetMockData();
+            var dbSetMock = new Mock<DbSet<ApplicationUser>>();
             var dbContextMock = new Mock<ApplicationDbContext>();
-            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(data.GetDbSetMock<ApplicationUser>().Object);
+            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(dbSetMock.Object);
 
             var userManagerMock = GetUserManagerMock<ApplicationUser>();
-            userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(
-                Task.FromResult(GetMockData().SingleOrDefault(e => e.Id.Equals(userId.ToString())))
-                );
+            userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(Task.FromResult(new ApplicationUser()));
 
             var roleManagerMock = GetRoleManagerMock<IdentityRole>().Object;
 
@@ -44,7 +41,7 @@ namespace WebShop.Users.Tests.Data
                 userManagerMock.Object,
                 roleManagerMock
                 );
-            var user = await applicationUsersRepository.GetUser(userId);
+            var user = await applicationUsersRepository.GetUser(Guid.NewGuid());
             Assert.NotNull(user);
             Assert.IsAssignableFrom<ApplicationUser>(user);
         }
@@ -53,15 +50,12 @@ namespace WebShop.Users.Tests.Data
         [Fact]
         public async Task GetUser_Throws_NotFoundException()
         {
-            var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b5");
-            var data = GetMockData();
+            var dbSetMock = new Mock<DbSet<ApplicationUser>>();
             var dbContextMock = new Mock<ApplicationDbContext>();
-            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(data.GetDbSetMock<ApplicationUser>().Object);
+            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(dbSetMock.Object);
 
             var userManagerMock = GetUserManagerMock<ApplicationUser>();
-            userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(
-                Task.FromResult(GetMockData().SingleOrDefault(e => e.Id.Equals(userId.ToString())))
-                );
+            userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(Task.FromResult<ApplicationUser>(null));
 
             var roleManagerMock = GetRoleManagerMock<IdentityRole>().Object;
 
@@ -72,9 +66,8 @@ namespace WebShop.Users.Tests.Data
                 );
             await Assert.ThrowsAsync<NotFoundException>(async () =>
             {
-                await applicationUsersRepository.GetUser(userId);
+                await applicationUsersRepository.GetUser(Guid.NewGuid());
             });
-
 
         }
 
@@ -85,19 +78,6 @@ namespace WebShop.Users.Tests.Data
         #endregion
 
         #region Common methods
-
-        //TODO: Duplicate functionality WebShop.Common.Extensions.UnitTesting.GetDbSetMock (to be removed)
-        Mock<DbSet<TEntity>> GetDbSetMock<TEntity>(IList<TEntity> entities) where TEntity : IdentityUser
-        {
-            var queryableEntitites = entities.AsQueryable();
-            var dbSet = new Mock<DbSet<TEntity>>();
-            dbSet.As<IQueryable<TEntity>>().Setup(m => m.Provider).Returns(queryableEntitites.Provider);
-            dbSet.As<IQueryable<TEntity>>().Setup(m => m.Expression).Returns(queryableEntitites.Expression);
-            dbSet.As<IQueryable<TEntity>>().Setup(m => m.ElementType).Returns(queryableEntitites.ElementType);
-            dbSet.As<IQueryable<TEntity>>().Setup(m => m.GetEnumerator()).Returns(() => queryableEntitites.GetEnumerator());
-            dbSet.Setup(d => d.Add(It.IsAny<TEntity>())).Callback<TEntity>((s) => entities.Add(s));
-            return dbSet;
-        }
 
         Mock<UserManager<TIDentityUser>> GetUserManagerMock<TIDentityUser>() where TIDentityUser : IdentityUser
         {
@@ -122,20 +102,6 @@ namespace WebShop.Users.Tests.Data
                     new Mock<IdentityErrorDescriber>().Object,
                     new Mock<ILogger<RoleManager<TIdentityRole>>>().Object);
         }
-
-        IList<ApplicationUser> GetMockData()
-        {
-            return new List<ApplicationUser>()
-            {
-                new ApplicationUser()
-                {
-                    Id =  Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b4").ToString(),
-                    FirstName = "John",
-                    LastName = "Wick"
-               }
-            };
-        }
-
         #endregion
 
     }
