@@ -1,3 +1,3 @@
-[![Build Status](https://dev.azure.com/dejanstojanovic/WebShop/_apis/build/status/WebShop.Users.Api-Master-Build?branchName=master)](https://dev.azure.com/dejanstojanovic/WebShop/_build/latest?definitionId=20&branchName=master) 
+[![Build Status](https://dev.azure.com/dejanstojanovic/WebShop/_apis/build/status/WebShop.Users.Api-Master-Build?branchName=master)](https://dev.azure.com/dejanstojanovic/WebShop/_build/latest?definitionId=20&branchName=master) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=4bf495fc8175472cb67bcffc71d9ac8e&metric=coverage)](https://sonarcloud.io/dashboard?id=4bf495fc8175472cb67bcffc71d9ac8e)
 # Introduction 
 This solution is a playground for testing and exploring varios concepts and approaches in microservice pattern. Hope you find soemthing that may might help you with your problems
