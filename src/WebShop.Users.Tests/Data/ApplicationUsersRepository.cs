@@ -19,13 +19,13 @@ using WebShop.Common.Extensions;
 
 namespace WebShop.Users.Tests.Data
 {
-    public class RepositoryTests
+    public class ApplicationUsersRepositoryTests
     {
 
         #region GetUser
 
         [Fact]
-        public async Task ApplicationUsersRepository_GetUser_ReturnsUser()
+        public async Task GetUser_ReturnsUser()
         {
             var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b4");
             var data = GetMockData();
@@ -51,7 +51,7 @@ namespace WebShop.Users.Tests.Data
 
 
         [Fact]
-        public async Task ApplicationUsersRepository_GetUser_Throws_NotFoundException()
+        public async Task GetUser_Throws_NotFoundException()
         {
             var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b5");
             var data = GetMockData();

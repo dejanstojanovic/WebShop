@@ -11,6 +11,11 @@ namespace WebShop.Products.Data
     {
         private readonly ILoggerFactory loggerFactory;
 
+        public ProductsDbContext():base()
+        {
+
+        }
+
         public ProductsDbContext(DbContextOptions<ProductsDbContext> options)
          : base(options)
         {
