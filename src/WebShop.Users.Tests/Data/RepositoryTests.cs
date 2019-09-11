@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebShop.Common.Exceptions;
+using WebShop.Common.Extensions;
 
 namespace WebShop.Users.Tests.Data
 {
@@ -29,7 +30,7 @@ namespace WebShop.Users.Tests.Data
             var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b4");
             var data = GetMockData();
             var dbContextMock = new Mock<ApplicationDbContext>();
-            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(GetDbSetMock<ApplicationUser>(data).Object);
+            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(data.GetDbSetMock<ApplicationUser>().Object);
 
             var userManagerMock = GetUserManagerMock<ApplicationUser>();
             userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(
@@ -55,7 +56,7 @@ namespace WebShop.Users.Tests.Data
             var userId = Guid.Parse("5bd62b43-0668-4821-9b6f-e185271153b5");
             var data = GetMockData();
             var dbContextMock = new Mock<ApplicationDbContext>();
-            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(GetDbSetMock<ApplicationUser>(data).Object);
+            dbContextMock.Setup(s => s.Set<ApplicationUser>()).Returns(data.GetDbSetMock<ApplicationUser>().Object);
 
             var userManagerMock = GetUserManagerMock<ApplicationUser>();
             userManagerMock.Setup(u => u.FindByIdAsync(It.IsAny<String>())).Returns(
@@ -85,6 +86,7 @@ namespace WebShop.Users.Tests.Data
 
         #region Common methods
 
+        //TODO: Duplicate functionality WebShop.Common.Extensions.UnitTesting.GetDbSetMock (to be removed)
         Mock<DbSet<TEntity>> GetDbSetMock<TEntity>(IList<TEntity> entities) where TEntity : IdentityUser
         {
             var queryableEntitites = entities.AsQueryable();
