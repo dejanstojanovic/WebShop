@@ -1,10 +1,7 @@
 ﻿using WebShop.Common.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WebShop.Storage.FileSystem
@@ -12,15 +9,17 @@ namespace WebShop.Storage.FileSystem
     public class StorageService : IStorageService
     {
         private readonly String _folderPath;
-        private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly FileStorageOptions _options;
 
-           public StorageService(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public StorageService(FileStorageOptions options, IHostingEnvironment hostingEnvironment)
         {
+            if (String.IsNullOrWhiteSpace(options.Folder)) throw new ArgumentNullException("Folder", "Folder path not configured");
+
             this._hostingEnvironment = hostingEnvironment;
-            this._configuration = configuration;
-            this._folderPath = Path.Combine(Path.GetDirectoryName(hostingEnvironment.ContentRootPath), configuration.GetValue<String>("Profile:Folder"));
-            if (!Directory.Exists(_folderPath))
+            this._options = options;
+            this._folderPath = Path.Combine(Path.GetDirectoryName(hostingEnvironment.ContentRootPath), options.Folder);
+            if (!Directory.Exists(_folderPath) && options.CreateMissing)
             {
                 Directory.CreateDirectory(_folderPath);
             }

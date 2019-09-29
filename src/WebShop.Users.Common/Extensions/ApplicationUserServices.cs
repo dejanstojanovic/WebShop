@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
+using WebShop.Storage.FileSystem.Extensions;
 
 namespace WebShop.Users.Common.Extensions
 {
@@ -70,7 +71,7 @@ namespace WebShop.Users.Common.Extensions
             services.AddMessagingServices();
             services.AddServiceBusPublisher<UserRegisteredEvent>();
 
-            services.AddScoped<IStorageService, StorageService>();
+            services.AddFileSystemStorage();
 
         }
 
