@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace WebShop.Storage.FileSystem
 {
@@ -10,16 +11,16 @@ namespace WebShop.Storage.FileSystem
     {
         private readonly String _folderPath;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly FileStorageOptions _options;
+        private readonly FileStorageOptions _fileStorageOptions;
 
-        public StorageService(FileStorageOptions options, IHostingEnvironment hostingEnvironment)
+        public StorageService(IOptions<FileStorageOptions> options, IHostingEnvironment hostingEnvironment)
         {
-            if (String.IsNullOrWhiteSpace(options.Folder)) throw new ArgumentNullException("Folder", "Folder path not configured");
-
+            _fileStorageOptions = options.Value;
+            if (String.IsNullOrWhiteSpace(_fileStorageOptions.Folder)) throw new ArgumentNullException("Folder", "Folder path not configured");
             this._hostingEnvironment = hostingEnvironment;
-            this._options = options;
-            this._folderPath = Path.Combine(Path.GetDirectoryName(hostingEnvironment.ContentRootPath), options.Folder);
-            if (!Directory.Exists(_folderPath) && options.CreateMissing)
+           
+            this._folderPath = Path.Combine(Path.GetDirectoryName(hostingEnvironment.ContentRootPath), _fileStorageOptions.Folder);
+            if (!Directory.Exists(_folderPath) && _fileStorageOptions.CreateMissing)
             {
                 Directory.CreateDirectory(_folderPath);
             }
